@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   form.parse(req, async (err, fields, files) => {
     if (err) return res.status(500).json({ error: "Upload error" });
 
-    const file = files.audio;
+    const file = Array.isArray(files.audio) ? files.audio[0] : files.audio;
 
     const formData = new FormData();
     formData.append("file", fs.createReadStream(file.filepath));
