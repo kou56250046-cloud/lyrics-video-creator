@@ -2372,17 +2372,34 @@ async function autoTimecodesGroq() {
     return;
   }
 
-  const formData = new FormData();
-  formData.append("audio", audioFile);
+  const btn = document.querySelector(".btn-auto");
+  const origText = btn.textContent;
+  btn.textContent = "⏳ 解析中...";
+  btn.disabled = true;
 
-  const res = await fetch("/api/transcribe", {
-    method: "POST",
-    body: formData,
-  });
+  try {
+    const formData = new FormData();
+    formData.append("audio", audioFile);
 
-  const data = await res.json();
+    const res = await fetch("/api/transcribe", {
+      method: "POST",
+      body: formData,
+    });
 
-  applyTimecodesFromSegments(data.segments);
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      alert("エラー: " + (data.error || res.statusText));
+      return;
+    }
+
+    applyTimecodesFromSegments(data.segments);
+  } catch (e) {
+    alert("通信エラー: " + e.message);
+  } finally {
+    btn.textContent = origText;
+    btn.disabled = false;
+  }
 }
 
 function applyTimecodesFromSegments(segments) {

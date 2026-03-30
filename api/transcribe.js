@@ -1,11 +1,5 @@
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 import formidable from "formidable";
-import fs from "fs";
+import { readFileSync } from "fs";
 
 export default async function handler(req, res) {
   const form = formidable();
@@ -14,25 +8,32 @@ export default async function handler(req, res) {
     if (err) return res.status(500).json({ error: "Upload error" });
 
     const file = Array.isArray(files.audio) ? files.audio[0] : files.audio;
+    if (!file) return res.status(400).json({ error: "No audio file" });
 
-    const formData = new FormData();
-    formData.append("file", fs.createReadStream(file.filepath));
-    formData.append("model", "whisper-large-v3");
-    formData.append("response_format", "verbose_json");
+    try {
+      const fileData = readFileSync(file.filepath);
+      const blob = new Blob([fileData], { type: file.mimetype || "audio/mpeg" });
 
-    const groqRes = await fetch(
-      "https://api.groq.com/openai/v1/audio/transcriptions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-        },
-        body: formData,
-      }
-    );
+      const formData = new FormData();
+      formData.append("file", blob, file.originalFilename || "audio.mp3");
+      formData.append("model", "whisper-large-v3");
+      formData.append("response_format", "verbose_json");
 
-    const data = await groqRes.json();
+      const groqRes = await fetch(
+        "https://api.groq.com/openai/v1/audio/transcriptions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+          },
+          body: formData,
+        }
+      );
 
-    res.status(200).json(data);
+      const data = await groqRes.json();
+      res.status(200).json(data);
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
   });
 }
