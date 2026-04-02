@@ -1095,6 +1095,11 @@ var exportRaf = null;
 var exportRecorder = null;
 var exportBgImgs = {};
 var exportFrameN = 0;
+var _expAnimPhase = 'idle';
+var _expAnimFrame = 0;
+var _expLastIdx = -99;
+var _expExitText = '';
+var _expCurText = '';
 var selectedExportFmt = 'webm';
 
 // DOM refs
@@ -1956,6 +1961,7 @@ function startRec(fmt) {
   exportCanvas.width = 1280; exportCanvas.height = 720;
   exportCtx = exportCanvas.getContext('2d');
   exportFrameN = 0;
+  _expAnimPhase = 'idle'; _expAnimFrame = 0; _expLastIdx = -99; _expExitText = ''; _expCurText = '';
 
   // Preload bg images
   exportBgImgs = {};
@@ -1963,6 +1969,7 @@ function startRec(fmt) {
     return new Promise(function(res) {
       var img = new Image();
       img.onload = function(){exportBgImgs[layer.id]=img;res();};
+      img.onerror = function(){res();};
       img.src = layer.data;
     });
   });
@@ -2044,30 +2051,77 @@ function drawExportFrame() {
     ctx.globalAlpha=1;
   }
 
-  // Text
-  var curTxt = lyrics[curIdx] || '';
-  var ff2 = document.getElementById('fontFam').value.replace(/'/g,'');
-  var fs2 = parseInt(document.getElementById('fontSize').value)*(W/400);
-  var fw2 = document.getElementById('fontW').value;
-  var tc2 = document.getElementById('textColor').value;
-  var ta2 = document.getElementById('textAlign').value;
-  var shC2 = document.getElementById('shadowColor').value;
-  var shB2 = parseInt(document.getElementById('shadowBlur').value)*(W/400);
-  var stC2 = document.getElementById('strokeColor').value;
-  var stW2 = parseFloat(document.getElementById('strokeW').value)*(W/400);
-  ctx.textAlign = ta2==='center'?'center':ta2==='right'?'right':'left';
-  var tx = ta2==='center'?W/2:ta2==='right'?W*.9:W*.1;
-  ctx.font = fw2+' '+Math.round(fs2)+'px '+ff2;
-  ctx.shadowColor=shC2; ctx.shadowBlur=shB2;
-  var gmap = {'none':null,'white':['#fff','#aaa'],'pc':['#a855f7','#06b6d4'],'gr':['#f59e0b','#ef4444'],'gc':['#22c55e','#06b6d4'],'pg':['#ec4899','#f59e0b']};
-  if (textGrad!=='none' && gmap[textGrad]) {
+  // Text with animation
+  var rawTxt = lyrics[curIdx] || '♪';
+  var ENTER_F=15, EXIT_F=12;
+  if (curIdx !== _expLastIdx) {
+    if (_expLastIdx >= 0 && _expCurText) {
+      _expExitText = _expCurText;
+      _expAnimPhase = 'exit'; _expAnimFrame = exportFrameN;
+    } else {
+      _expCurText = rawTxt;
+      _expAnimPhase = 'enter'; _expAnimFrame = exportFrameN;
+    }
+    _expLastIdx = curIdx;
+  }
+  var displayTxt = _expCurText || '♪';
+  var tAlpha=1, tTX=0, tTY=0, tScale=1;
+  if (_expAnimPhase==='exit') {
+    var ep=Math.min((exportFrameN-_expAnimFrame)/EXIT_F,1);
+    displayTxt=_expExitText||'♪'; tAlpha=1-ep;
+    if(exitAnim==='fadeDown')tTY=ep*40;
+    else if(exitAnim==='fadeUp')tTY=-ep*40;
+    else if(exitAnim==='slideLeft')tTX=-ep*100;
+    else if(exitAnim==='slideRight')tTX=ep*100;
+    else if(exitAnim==='scaleOut')tScale=Math.max(0.1,1-ep*0.6);
+    else if(exitAnim==='scaleBig')tScale=1+ep*0.8;
+    if(ep>=1){_expCurText=rawTxt;_expAnimPhase='enter';_expAnimFrame=exportFrameN;}
+  } else if (_expAnimPhase==='enter') {
+    var ep=Math.min((exportFrameN-_expAnimFrame)/ENTER_F,1);
+    displayTxt=_expCurText||'♪'; tAlpha=ep;
+    if(enterAnim==='fadeUp')tTY=(1-ep)*40;
+    else if(enterAnim==='fadeDown')tTY=-(1-ep)*40;
+    else if(enterAnim==='slideLeft')tTX=-(1-ep)*80;
+    else if(enterAnim==='slideRight')tTX=(1-ep)*80;
+    else if(enterAnim==='scaleIn')tScale=0.5+ep*0.5;
+    else if(enterAnim==='scaleInBig')tScale=1.6-ep*0.6;
+    else if(enterAnim==='dropIn')tTY=-(1-ep)*120;
+    if(ep>=1)_expAnimPhase='idle';
+  } else {
+    var lt=exportFrameN/30;
+    if(loopAnim==='pulse')tScale=1+Math.sin(lt*Math.PI)*0.06;
+    else if(loopAnim==='float')tTY=Math.sin(lt*Math.PI)*14;
+    else if(loopAnim==='shake')tTX=Math.sin(lt*Math.PI*8)*10*(1-Math.min((exportFrameN%60)/30,1));
+  }
+  var ff2=document.getElementById('fontFam').value.replace(/'/g,'');
+  var fs2=parseInt(document.getElementById('fontSize').value)*(W/400);
+  var fw2=document.getElementById('fontW').value;
+  var tc2=document.getElementById('textColor').value;
+  var ta2=document.getElementById('textAlign').value;
+  var shC2=document.getElementById('shadowColor').value;
+  var shB2=parseInt(document.getElementById('shadowBlur').value)*(W/400);
+  var stC2=document.getElementById('strokeColor').value;
+  var stW2=parseFloat(document.getElementById('strokeW').value)*(W/400);
+  var txX=ta2==='center'?W/2:ta2==='right'?W*.9:W*.1;
+  var txY=H/2+fs2*.35;
+  var gmap={'none':null,'white':['#fff','#aaa'],'pc':['#a855f7','#06b6d4'],'gr':['#f59e0b','#ef4444'],'gc':['#22c55e','#06b6d4'],'pg':['#ec4899','#f59e0b']};
+  ctx.save();
+  ctx.globalAlpha=Math.max(0,Math.min(1,tAlpha));
+  ctx.translate(tTX,tTY);
+  if(tScale!==1){ctx.translate(txX,txY);ctx.scale(tScale,tScale);ctx.translate(-txX,-txY);}
+  ctx.textAlign=ta2==='center'?'center':ta2==='right'?'right':'left';
+  ctx.font=fw2+' '+Math.round(fs2)+'px '+ff2;
+  var neonBlur=loopAnim==='neon'?shB2*(2+2*Math.abs(Math.sin(exportFrameN/30*Math.PI))):shB2;
+  ctx.shadowColor=shC2; ctx.shadowBlur=neonBlur;
+  if(textGrad!=='none'&&gmap[textGrad]){
     var g2=ctx.createLinearGradient(W*.1,0,W*.9,0);
-    g2.addColorStop(0,gmap[textGrad][0]); g2.addColorStop(1,gmap[textGrad][1]);
+    g2.addColorStop(0,gmap[textGrad][0]);g2.addColorStop(1,gmap[textGrad][1]);
     ctx.fillStyle=g2;
-  } else { ctx.fillStyle=tc2; }
-  if (stW2>0) { ctx.strokeStyle=stC2; ctx.lineWidth=stW2*2; ctx.strokeText(curTxt||'♪',tx,H/2+fs2*.35,W*.9); }
-  ctx.fillText(curTxt||'♪',tx,H/2+fs2*.35,W*.9);
+  } else {ctx.fillStyle=tc2;}
+  if(stW2>0){ctx.strokeStyle=stC2;ctx.lineWidth=stW2*2;ctx.strokeText(displayTxt,txX,txY,W*.9);}
+  ctx.fillText(displayTxt,txX,txY,W*.9);
   ctx.shadowBlur=0;
+  ctx.restore();
 
   exportRaf = requestAnimationFrame(drawExportFrame);
 }
@@ -2264,7 +2318,7 @@ function buildThumbnailCanvas(cb) {
         finish();
       };
       img.onerror = function() { ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H); finish(); };
-      img.crossOrigin = 'anonymous';
+      if (!layer.data.startsWith('blob:')) img.crossOrigin = 'anonymous';
       img.src = layer.data;
     } else {
       ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H); finish();
