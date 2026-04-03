@@ -319,745 +319,6 @@ input[type=color]{width:32px;height:24px;border:none;border-radius:4px;cursor:po
 .thumb-bg-zone:hover{border-color:var(--accent);background:rgba(124,58,237,.06)}
 .thumb-bg-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .thumb-bg-zone.has-img{border-color:var(--green);background:rgba(34,197,94,.06);color:var(--green)}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LYRIC MOTION</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
-:root {
-  --bg:#0a0a0f; --panel:#12121a; --panel2:#1a1a26; --border:#2a2a3e;
-  --accent:#7c3aed; --accent2:#a855f7; --accent3:#06b6d4;
-  --text:#e8e8f0; --text2:#8888aa; --red:#ef4444; --green:#22c55e;
-  --anim-dur:0.5s; --loop-dur:2s; --bg-motion-dur:20s;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* HEADER */
-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--panel);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;background:linear-gradient(90deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--text2);display:block;-webkit-text-fill-color:var(--text2);margin-top:-4px}
-.hbtn{background:var(--panel2);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer}
-.hbtn-primary{background:linear-gradient(135deg,var(--accent),var(--accent3));border:none;color:white;font-weight:700;letter-spacing:1px}
-
-/* WORKSPACE */
-.workspace{display:grid;grid-template-columns:320px 1fr 290px;height:calc(100vh - 57px)}
-
-/* PANELS */
-.panel{background:var(--panel);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
-.panel-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--text2);padding:12px 16px 10px;border-bottom:1px solid var(--border);text-transform:uppercase}
-.style-panel{background:var(--panel);border-left:1px solid var(--border);overflow-y:auto}
-.style-group{padding:14px 16px;border-bottom:1px solid var(--border)}
-.sgt{font-size:10px;letter-spacing:2px;color:var(--text2);font-family:'Space Mono',monospace;margin-bottom:10px;text-transform:uppercase}
-.slabel{font-size:11px;color:var(--text2);letter-spacing:1px;margin-bottom:6px;display:block}
-.input-section{padding:14px 16px;border-bottom:1px solid var(--border)}
-
-/* FORM ELEMENTS */
-select.ss,textarea.la,input[type=range]{width:100%}
-select.ss{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 8px;font-size:12px;outline:none;margin-bottom:8px;cursor:pointer}
-textarea.la{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:8px;font-family:'Noto Sans JP',sans-serif;font-size:13px;padding:10px 12px;resize:none;line-height:1.7;outline:none;transition:border-color .2s}
-textarea.la:focus{border-color:var(--accent)}
-input[type=range]{-webkit-appearance:none;height:3px;background:var(--border);border-radius:2px;outline:none}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent2);border-radius:50%;cursor:pointer}
-input[type=color]{width:32px;height:24px;border:none;border-radius:4px;cursor:pointer;background:none}
-
-/* ROWS */
-.ctrl-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.ctrl-label{font-size:12px;color:var(--text2)}
-.ctrl-val{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);min-width:36px;text-align:right}
-.color-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.color-row label{font-size:12px;color:var(--text2);flex:1}
-.swatch-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.swatch{width:24px;height:24px;border-radius:4px;cursor:pointer;border:2px solid transparent;transition:all .15s}
-.swatch.active{border-color:white;transform:scale(1.2)}
-
-/* BUTTONS */
-.btn-row{display:flex;gap:6px}
-.abtn{padding:6px 4px;background:var(--panel2);border:1px solid var(--border);color:var(--text2);border-radius:6px;font-size:10px;cursor:pointer;text-align:center;transition:all .15s;line-height:1.4}
-.abtn:hover,.abtn.active{background:rgba(124,58,237,.25);border-color:var(--accent);color:var(--text)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:8px}
-.tabtrow{display:flex;gap:0;margin-bottom:12px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.atab{flex:1;padding:7px 4px;background:var(--panel2);border:none;color:var(--text2);font-size:10px;cursor:pointer;transition:all .15s;text-align:center;font-family:'Space Mono',monospace}
-.atab.active{background:var(--accent);color:white}
-.tabpane{display:none}.tabpane.show{display:block}
-.pbtn{width:100%;padding:8px;margin:6px 0;background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(6,182,212,.3));border:1px solid var(--accent);border-radius:8px;color:var(--accent2);font-size:11px;cursor:pointer;font-family:'Space Mono',monospace;letter-spacing:1px;transition:all .2s}
-.pbtn:hover{background:linear-gradient(135deg,rgba(124,58,237,.5),rgba(6,182,212,.5))}
-.speed-row{display:flex;gap:5px;margin:8px 0}
-.spdbtn{flex:1;padding:5px 2px;background:var(--panel2);border:1px solid var(--border);color:var(--text2);border-radius:6px;font-size:10px;cursor:pointer;text-align:center;transition:all .15s;font-family:'Space Mono',monospace}
-.spdbtn.active{background:rgba(6,182,212,.2);border-color:var(--accent3);color:var(--accent3)}
-.export-btn{margin:14px 16px;width:calc(100% - 32px);padding:12px;background:linear-gradient(135deg,#7c3aed,#06b6d4);border:none;border-radius:10px;color:white;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:2px;font-family:'Space Mono',monospace;transition:opacity .2s}
-.export-btn:hover{opacity:.88}
-
-/* UPLOAD */
-.upzone{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .25s;position:relative}
-.upzone:hover{border-color:var(--accent);background:rgba(124,58,237,.05)}
-.upzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
-.file-info{display:flex;align-items:center;gap:10px;background:rgba(124,58,237,.1);border:1px solid var(--accent);border-radius:8px;padding:10px 12px;margin-top:8px}
-.audio-player{background:var(--panel2);border-radius:10px;padding:12px;margin-top:10px}
-.play-btn{width:36px;height:36px;background:var(--accent);border:none;border-radius:50%;cursor:pointer;color:white;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
-.play-btn:hover{background:var(--accent2)}
-.prow{display:flex;align-items:center;gap:10px}
-.progbar{flex:1;height:4px;background:var(--border);border-radius:2px;cursor:pointer;position:relative}
-.progfill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:2px;pointer-events:none;transition:width .1s}
-.timedisp{font-family:'Space Mono',monospace;font-size:11px;color:var(--text2);white-space:nowrap}
-.btn-auto{width:100%;padding:9px;background:linear-gradient(135deg,var(--accent),var(--accent3));border:none;border-radius:8px;color:white;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:10px;letter-spacing:1px}
-
-/* TIMECODE LIST */
-.tclist{padding:0 14px 14px;flex:1;overflow-y:auto}
-.tcitem{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
-.tcitem.cur .tcbadge{background:var(--accent);color:white;border-color:var(--accent)}
-.tcitem.cur .tctext{color:white;font-weight:700}
-.tcbadge{font-family:'Space Mono',monospace;font-size:10px;background:var(--panel2);border:1px solid var(--border);border-radius:4px;padding:2px 6px;color:var(--accent3);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
-.tcbadge:hover,.tcbadge.set{background:rgba(6,182,212,.15);border-color:var(--accent3)}
-.tctext{font-size:12px;flex:1}
-.tcdel{color:var(--text2);font-size:13px;cursor:pointer;opacity:0;transition:opacity .15s}
-.tcitem:hover .tcdel{opacity:1}
-.tag-pill{display:inline-block;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);border-radius:20px;padding:2px 10px;font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;margin-left:6px}
-
-/* PREVIEW */
-.preview-panel{background:#060608;display:flex;flex-direction:column;align-items:stretch}
-.prev-toolbar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--border)}
-.prev-toolbar select,.prev-toolbar button{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer}
-.plabel{font-size:11px;color:var(--text2);font-family:'Space Mono',monospace}
-.stage-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px;background:repeating-conic-gradient(#111 0% 25%,transparent 0% 50%) 0 0/16px 16px}
-.stage{position:relative;overflow:hidden;box-shadow:0 0 60px rgba(124,58,237,.3)}
-.r169{width:100%;max-width:720px;aspect-ratio:16/9}
-.r916{width:300px;aspect-ratio:9/16}
-.r11{width:400px;aspect-ratio:1/1}
-.sbg{position:absolute;inset:0}
-.scontent{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5%;text-align:center}
-.ldisp{will-change:transform,opacity;width:100%}
-.lprev,.lnext{opacity:0;pointer-events:none;width:100%}
-.vizbar{position:absolute;bottom:0;left:0;right:0;height:60px;display:flex;align-items:flex-end;justify-content:center;gap:2px;padding:0 10%;opacity:.4;pointer-events:none}
-.vizitem{flex:1;border-radius:2px 2px 0 0;transition:height .1s}
-.wcanvas{position:absolute;bottom:0;left:0;right:0;height:80px;pointer-events:none}
-
-/* BG IMAGE LAYER */
-.sbg-img{position:absolute;inset:-10%;width:120%;height:120%;background-size:cover;background-position:center;transform-origin:center center;will-change:transform}
-.sbg-vid{position:absolute;inset:-10%;width:120%;height:120%;object-fit:cover;transform-origin:center center;will-change:transform}
-
-/* MEDIA LAYERS UI */
-.ml-add{padding:8px 6px;background:var(--panel2);border:1px dashed var(--border);color:var(--text2);border-radius:8px;font-size:11px;cursor:pointer;transition:all .15s;text-align:center;flex:1}
-.ml-add:hover{border-color:var(--accent);color:var(--accent2);background:rgba(124,58,237,.1)}
-.ml-item{display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;cursor:pointer;transition:all .15s;position:relative;user-select:none}
-.ml-item:hover{border-color:var(--accent)}
-.ml-item.sel{border-color:var(--accent2);background:rgba(124,58,237,.1)}
-.ml-item.now{border-color:var(--accent);box-shadow:0 0 10px rgba(124,58,237,.4)}
-.ml-item.dragging{opacity:.4;border-style:dashed}
-.ml-item.drag-over{border-top:2px solid var(--accent3)}
-.now-badge{position:absolute;top:-6px;left:8px;background:var(--accent);color:white;font-size:9px;font-family:'Space Mono',monospace;padding:1px 6px;border-radius:4px}
-.ml-thumb{width:50px;height:34px;border-radius:4px;object-fit:cover;flex-shrink:0;background:#000;border:1px solid var(--border)}
-.ml-thumb-img{width:50px;height:34px;border-radius:4px;background-size:cover;background-position:center;flex-shrink:0;border:1px solid var(--border)}
-.ml-info{flex:1;min-width:0}
-.ml-name{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ml-meta{font-size:10px;color:var(--text2);font-family:'Space Mono',monospace;margin-top:2px}
-.ml-type{font-size:9px;padding:2px 5px;border-radius:4px;font-family:'Space Mono',monospace;flex-shrink:0}
-.ml-type.image{background:rgba(6,182,212,.15);color:var(--accent3);border:1px solid rgba(6,182,212,.3)}
-.ml-type.video{background:rgba(168,85,247,.15);color:var(--accent2);border:1px solid rgba(168,85,247,.3)}
-.ml-acts{display:flex;gap:3px;flex-shrink:0}
-.lbtn{width:22px;height:22px;background:var(--panel);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.lbtn:hover{background:var(--accent);border-color:var(--accent);color:white}
-.lbtn.del:hover{background:var(--red);border-color:var(--red)}
-.drag-handle{color:var(--text2);font-size:12px;cursor:grab;padding:0 2px;opacity:.5}
-.drag-handle:hover{opacity:1;color:var(--accent2)}
-.bg-type-row{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
-.bgtbtn{flex:1;min-width:60px;padding:6px 4px;background:var(--panel2);border:1px solid var(--border);color:var(--text2);border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s;text-align:center}
-.bgtbtn.active{background:rgba(124,58,237,.2);border-color:var(--accent);color:var(--text)}
-.grad-stops{display:flex;gap:6px;align-items:center;margin-bottom:8px}
-.ptype-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:8px}
-.ptbtn{padding:6px 4px;background:var(--panel2);border:1px solid var(--border);color:var(--text2);border-radius:6px;font-size:10px;cursor:pointer;text-align:center;transition:all .15s}
-.ptbtn:hover,.ptbtn.active{background:rgba(124,58,237,.2);border-color:var(--accent);color:var(--text)}
-.visbtn{flex:1;padding:6px;background:var(--panel2);border:1px solid var(--border);color:var(--text2);border-radius:6px;font-size:10px;cursor:pointer;transition:all .15s;text-align:center}
-.visbtn.active{background:rgba(124,58,237,.2);border-color:var(--accent);color:var(--text)}
-.empty-msg{font-size:11px;color:var(--text2);text-align:center;padding:24px 0;border:1px dashed var(--border);border-radius:8px}
-
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
-@keyframes scaleInBig{from{opacity:0;transform:scale(1.6)}to{opacity:1;transform:scale(1)}}
-@keyframes slideLeft{from{opacity:0;transform:translateX(-80px)}to{opacity:1;transform:translateX(0)}}
-@keyframes slideRight{from{opacity:0;transform:translateX(80px)}to{opacity:1;transform:translateX(0)}}
-@keyframes bounceIn{0%{opacity:0;transform:scale(.2)}55%{opacity:1;transform:scale(1.12)}75%{transform:scale(.94)}90%{transform:scale(1.04)}100%{transform:scale(1)}}
-@keyframes spinIn{from{opacity:0;transform:rotate(-200deg) scale(.2)}to{opacity:1;transform:rotate(0) scale(1)}}
-@keyframes blurIn{from{opacity:0;filter:blur(30px);transform:scale(1.15)}to{opacity:1;filter:blur(0);transform:scale(1)}}
-@keyframes flipInX{from{opacity:0;transform:perspective(400px) rotateX(90deg)}to{opacity:1;transform:perspective(400px) rotateX(0)}}
-@keyframes flipInY{from{opacity:0;transform:perspective(400px) rotateY(90deg)}to{opacity:1;transform:perspective(400px) rotateY(0)}}
-@keyframes dropIn{from{opacity:0;transform:translateY(-120%) rotate(-10deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
-@keyframes typewriter{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0% 0 0)}}
-@keyframes glitch{0%,88%,100%{clip-path:inset(0);transform:translate(0)}90%{clip-path:inset(15% 0 55% 0);transform:translate(-6px,2px);color:#0ff}93%{clip-path:inset(65% 0 8% 0);transform:translate(6px,-2px);color:#f0f}96%{clip-path:inset(35% 0 25% 0);transform:translate(-3px,1px)}}
-@keyframes shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-10px) rotate(-2deg)}35%{transform:translateX(10px) rotate(2deg)}55%{transform:translateX(-8px)}75%{transform:translateX(8px)}90%{transform:translateX(-4px)}}
-@keyframes reveal{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0% 0)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-@keyframes neon{0%,100%{text-shadow:0 0 8px currentColor,0 0 25px currentColor}50%{text-shadow:0 0 20px currentColor,0 0 60px currentColor,0 0 110px currentColor}}
-@keyframes glitchLoop{0%,92%,100%{transform:translate(0)}93%{transform:translate(-5px,2px);color:#0ff}95%{transform:translate(5px,-2px);color:#f0f}}
-@keyframes charFall{from{opacity:0;transform:translateY(-60px) rotate(var(--r,0deg))}to{opacity:1;transform:translateY(0) rotate(0)}}
-@keyframes charSlide{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes charScale{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
-@keyframes charFlip{from{opacity:0;transform:rotateY(90deg)}to{opacity:1;transform:rotateY(0)}}
-@keyframes charBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@keyframes charWave{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@keyframes charGlitch{0%,100%{transform:translate(0)}25%{transform:translate(-3px,1px);color:#0ff}75%{transform:translate(3px,-1px);color:#f0f}}
-@keyframes charScatter{from{opacity:0;transform:translate(var(--sx,120px),var(--sy,-120px)) scale(0.2) rotate(var(--r,0deg))}to{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}}
-@keyframes charSplit{from{opacity:0;transform:translateY(calc(var(--side,1) * -60px)) scaleY(0.4)}to{opacity:1;transform:translateY(0) scaleY(1)}}
-@keyframes charBounceIn{0%{opacity:0;transform:translateY(-100px) scaleY(1.2)}50%{opacity:1;transform:translateY(10px) scaleY(0.9)}70%{transform:translateY(-6px) scaleY(1.05)}85%{transform:translateY(3px) scaleY(0.97)}100%{transform:translateY(0) scaleY(1)}}
-@keyframes charZoomRush{from{opacity:0;transform:scale(6) translateZ(0);filter:blur(8px)}60%{opacity:1}to{opacity:1;transform:scale(1) translateZ(0);filter:blur(0)}}
-@keyframes exitFadeOut{from{opacity:1}to{opacity:0}}
-@keyframes exitFadeDown{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(40px)}}
-@keyframes exitFadeUp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-40px)}}
-@keyframes exitScaleOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.4)}}
-@keyframes exitScaleBig{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.8)}}
-@keyframes exitSlideL{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-100px)}}
-@keyframes exitSlideR{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100px)}}
-@keyframes exitBlur{from{opacity:1;filter:blur(0)}to{opacity:0;filter:blur(30px)}}
-@keyframes exitFlip{from{opacity:1;transform:perspective(400px) rotateX(0)}to{opacity:0;transform:perspective(400px) rotateX(-90deg)}}
-@keyframes bgZoomIn{from{transform:scale(1)}to{transform:scale(1.25)}}
-@keyframes bgZoomOut{from{transform:scale(1.25)}to{transform:scale(1)}}
-@keyframes bgPanL{from{transform:scale(1.2) translateX(0)}to{transform:scale(1.2) translateX(-8%)}}
-@keyframes bgPanR{from{transform:scale(1.2) translateX(0)}to{transform:scale(1.2) translateX(8%)}}
-@keyframes bgPanU{from{transform:scale(1.2) translateY(0)}to{transform:scale(1.2) translateY(-8%)}}
-@keyframes bgPanD{from{transform:scale(1.2) translateY(0)}to{transform:scale(1.2) translateY(8%)}}
-@keyframes bgKen{0%{transform:scale(1) translate(0,0)}33%{transform:scale(1.15) translate(3%,-2%)}66%{transform:scale(1.2) translate(-3%,3%)}100%{transform:scale(1.1) translate(2%,-1%)}}
-@keyframes bgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-@keyframes bgWave{0%,100%{transform:scale(1.1) skewX(0) translateY(0)}25%{transform:scale(1.12) skewX(1deg) translateY(-8px)}75%{transform:scale(1.12) skewX(-1deg) translateY(8px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ENTER CLASS BINDINGS */
-.e-fadeUp .ldisp{animation:fadeUp var(--anim-dur) cubic-bezier(.34,1.56,.64,1) both}
-.e-fadeDown .ldisp{animation:fadeDown var(--anim-dur) cubic-bezier(.34,1.56,.64,1) both}
-.e-fadeIn .ldisp{animation:fadeIn var(--anim-dur) ease both}
-.e-scaleIn .ldisp{animation:scaleIn var(--anim-dur) cubic-bezier(.34,1.56,.64,1) both}
-.e-scaleInBig .ldisp{animation:scaleInBig var(--anim-dur) ease both}
-.e-slideLeft .ldisp{animation:slideLeft var(--anim-dur) ease both}
-.e-slideRight .ldisp{animation:slideRight var(--anim-dur) ease both}
-.e-bounceIn .ldisp{animation:bounceIn var(--anim-dur) ease both}
-.e-spinIn .ldisp{animation:spinIn var(--anim-dur) ease both}
-.e-blurIn .ldisp{animation:blurIn var(--anim-dur) ease both}
-.e-flipInX .ldisp{animation:flipInX var(--anim-dur) ease both}
-.e-flipInY .ldisp{animation:flipInY var(--anim-dur) ease both}
-.e-dropIn .ldisp{animation:dropIn var(--anim-dur) cubic-bezier(.34,1.56,.64,1) both}
-.e-typewriter .ldisp{animation:typewriter var(--anim-dur) steps(24,end) both}
-.e-glitch .ldisp{animation:glitch var(--anim-dur) ease both}
-.e-shake .ldisp{animation:shake var(--anim-dur) ease both}
-.e-reveal .ldisp{animation:reveal var(--anim-dur) ease both}
-.e-float .ldisp{animation:float var(--loop-dur) ease-in-out infinite}
-.e-pulse .ldisp{animation:pulse var(--loop-dur) ease-in-out infinite}
-.e-neon .ldisp{animation:neon var(--loop-dur) ease-in-out infinite}
-.e-glitchLoop .ldisp{animation:glitchLoop 3s linear infinite}
-
-/* EXIT CLASS BINDINGS */
-.x-fadeOut .ldisp.exit{animation:exitFadeOut .4s ease both}
-.x-fadeDown .ldisp.exit{animation:exitFadeDown .4s ease both}
-.x-fadeUp .ldisp.exit{animation:exitFadeUp .4s ease both}
-.x-scaleOut .ldisp.exit{animation:exitScaleOut .35s ease both}
-.x-scaleBig .ldisp.exit{animation:exitScaleBig .35s ease both}
-.x-slideLeft .ldisp.exit{animation:exitSlideL .35s ease both}
-.x-slideRight .ldisp.exit{animation:exitSlideR .35s ease both}
-.x-blur .ldisp.exit{animation:exitBlur .4s ease both}
-.x-flipOut .ldisp.exit{animation:exitFlip .4s ease both}
-
-/* BG MOTION */
-.sbg-img.m-zoomIn,.sbg-vid.m-zoomIn{animation:bgZoomIn var(--bg-motion-dur) ease-in-out infinite alternate}
-.sbg-img.m-zoomOut,.sbg-vid.m-zoomOut{animation:bgZoomOut var(--bg-motion-dur) ease-in-out infinite alternate}
-.sbg-img.m-panL,.sbg-vid.m-panL{animation:bgPanL var(--bg-motion-dur) ease-in-out infinite alternate}
-.sbg-img.m-panR,.sbg-vid.m-panR{animation:bgPanR var(--bg-motion-dur) ease-in-out infinite alternate}
-.sbg-img.m-panU,.sbg-vid.m-panU{animation:bgPanU var(--bg-motion-dur) ease-in-out infinite alternate}
-.sbg-img.m-panD,.sbg-vid.m-panD{animation:bgPanD var(--bg-motion-dur) ease-in-out infinite alternate}
-.sbg-img.m-ken,.sbg-vid.m-ken{animation:bgKen var(--bg-motion-dur) ease-in-out infinite}
-.sbg-img.m-pulse,.sbg-vid.m-pulse{animation:bgPulse var(--bg-motion-dur) ease-in-out infinite}
-.sbg-img.m-wave,.sbg-vid.m-wave{animation:bgWave var(--bg-motion-dur) ease-in-out infinite}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
-.modal{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:26px;max-width:440px;width:90%}
-.modal h3{font-size:16px;margin-bottom:12px}
-.modal p{color:var(--text2);font-size:13px;line-height:1.6;margin-bottom:14px}
-.modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
-.btn{padding:8px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:700}
-.btn-primary{background:var(--accent);color:white}
-.btn-ghost{background:var(--panel2);color:var(--text);border:1px solid var(--border)}
-.export-opt{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:10px;transition:border-color .2s}
-.export-opt:hover{border-color:var(--accent2)}
-.export-opt.sel{border-color:var(--accent2)}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--accent);color:var(--text);padding:10px 20px;border-radius:8px;font-size:12px;z-index:9999;animation:toastIn .3s ease,toastOut .3s ease 2.2s forwards;font-family:'Space Mono',monospace}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-@keyframes toastOut{to{opacity:0}}
-
-/* PROGRESS BADGE */
-.exp-prog{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--accent);border-radius:10px;padding:12px 20px;z-index:9999;font-family:'Space Mono',monospace;font-size:12px;color:var(--accent2);display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.5)}
-.exp-stop{background:var(--red);border:none;color:white;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;margin-left:8px}
-.char{display:inline-block;animation-fill-mode:both}
-
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
-/* === THUMBNAIL & YOUTUBE UPLOAD === */
-.yt-modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:2000;backdrop-filter:blur(8px)}
-.yt-modal{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:26px;max-width:540px;width:95%;max-height:92vh;overflow-y:auto}
-.yt-modal h3{font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.yt-field{margin-bottom:12px}
-.yt-field label{display:block;font-size:10px;color:var(--text2);letter-spacing:1.5px;margin-bottom:5px;font-family:'Space Mono',monospace;text-transform:uppercase}
-.yt-field input,.yt-field textarea,.yt-field select{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Noto Sans JP',sans-serif;outline:none;transition:border-color .2s}
-.yt-field input:focus,.yt-field textarea:focus,.yt-field select:focus{border-color:var(--accent)}
-.yt-field textarea{resize:vertical;min-height:70px;line-height:1.6}
-.yt-field select{cursor:pointer}
-.yt-auth-btn{width:100%;padding:10px;border:none;border-radius:8px;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s;margin-bottom:8px}
-.yt-auth-btn:hover{opacity:.88}
-.yt-auth-btn.google{background:linear-gradient(135deg,#4285f4,#34a853)}
-.yt-auth-btn.reauth{background:rgba(66,133,244,.15);border:1px solid #4285f4;color:#4285f4;font-size:11px;padding:6px}
-.yt-upload-btn{width:100%;padding:12px;border:none;border-radius:10px;color:white;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s;background:linear-gradient(135deg,#ff0000,#c00000)}
-.yt-upload-btn:hover:not(:disabled){opacity:.88}
-.yt-upload-btn:disabled{opacity:.4;cursor:default}
-.yt-prog-bar{height:6px;background:var(--border);border-radius:3px;margin:10px 0;overflow:hidden}
-.yt-prog-fill{height:100%;background:linear-gradient(90deg,#ff0000,#ff6b6b);border-radius:3px;transition:width .3s}
-.yt-status{font-family:'Space Mono',monospace;font-size:11px;color:var(--text2);text-align:center;margin-top:4px}
-.yt-success{font-size:13px;text-align:center;padding:14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;color:var(--green)}
-.yt-divider{border:none;border-top:1px solid var(--border);margin:14px 0}
-.auth-badge{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:12px;font-family:'Space Mono',monospace;margin-bottom:10px}
-.auth-badge.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--green)}
-.auth-badge.ng{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red)}
-.auth-badge.warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#f59e0b}
-.thumb-preview-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;border:1px solid var(--border);margin-bottom:10px;background:#000;display:block}
-.yt-btn-row{display:flex;gap:8px;margin-bottom:10px}
-.yt-hint{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--accent);border-radius:12px;padding:14px 18px;z-index:1500;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:toastIn .4s ease}
-.yt-hint-close{cursor:pointer;color:var(--text2);font-size:16px;line-height:1;opacity:.7}
-.yt-hint-close:hover{opacity:1}
-.sub-btn-row{display:flex;gap:6px;padding:0 16px 8px}
-.sub-btn{flex:1;padding:8px 4px;background:var(--panel2);border:1px solid var(--border);color:var(--text2);border-radius:8px;font-size:11px;cursor:pointer;transition:all .2s;text-align:center}
-.sub-btn:hover{border-color:var(--accent);color:var(--text);background:rgba(124,58,237,.1)}
-.sub-btn.yt{border-color:rgba(255,0,0,.3);color:#ff6b6b}
-.sub-btn.yt:hover{background:rgba(255,0,0,.1);border-color:#ff0000}
-.thumb-bg-zone{border:2px dashed var(--border);border-radius:8px;padding:14px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:8px;font-size:12px;color:var(--text2)}
-.thumb-bg-zone:hover{border-color:var(--accent);background:rgba(124,58,237,.06)}
-.thumb-bg-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.thumb-bg-zone.has-img{border-color:var(--green);background:rgba(34,197,94,.06);color:var(--green)}
-
-  /* 背景 */
-  #stageBg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  /* 動画・画像 */
-  .sbg-img,
-  .sbg-vid {
-    position: absolute; /* ← これ重要（抜けがち） */
-    z-index: 0;
-  }
-
-  /* 波形 */
-  #wcanvas {
-    position: absolute;
-    z-index: 1;
-  }
-
-  /* ビジュアライザ */
-  .vizbar {
-    position: absolute;
-    z-index: 2;
-  }
-
-  /* 歌詞（最前面） */
-  #scontent {
-    position: absolute;
-    z-index: 10;
-  }
-
-</style>
-</head>
-<body>
-<header>
-  <div>
-    <div class="logo">LYRIC MOTION<span>LYRICS VIDEO CREATOR</span></div>
-  </div>
-  <div style="display:flex;gap:8px">
-    <button class="hbtn" onclick="showHelp()">使い方</button>
-    <button class="hbtn hbtn-primary" onclick="exportVideo()">▶ EXPORT</button>
-  </div>
-</header>
-
-<div class="workspace">
-<!-- ===== LEFT PANEL ===== -->
-<div class="panel">
-  <div class="panel-title">INPUT <span class="tag-pill">STEP 1-3</span></div>
-
-  <div class="input-section">
-    <div class="slabel">① AUDIO FILE</div>
-    <div class="upzone" id="audioZone">
-      <input type="file" id="audioInput" accept="audio/*" onchange="handleAudioUpload(event)">
-      <div style="font-size:26px;margin-bottom:6px">🎵</div>
-      <div style="font-size:13px;color:var(--text2)"><b style="color:var(--accent2)">クリックまたはドロップ</b><br>MP3 / WAV / OGG / M4A</div>
-    </div>
-    <div id="fileInfo" style="display:none" class="file-info">
-      <span style="font-size:20px">🎧</span>
-      <div><div id="fileName" style="font-size:12px;font-weight:700"></div><div id="fileSize" style="font-size:11px;color:var(--text2)"></div></div>
-    </div>
-    <div id="audioPlayerWrap" style="display:none">
-      <audio id="audioEl" style="display:none"></audio>
-      <div class="audio-player">
-        <div class="prow">
-          <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
-          <div class="progbar" id="progBar" onclick="seekAudio(event)">
-            <div class="progfill" id="progFill" style="width:0%"></div>
-          </div>
-          <div class="timedisp" id="timeDisp">0:00 / 0:00</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="input-section">
-    <div class="slabel">② 歌詞入力</div>
-    <textarea class="la" id="lyricsInput" rows="8" placeholder="歌詞を1行ずつ入力&#10;&#10;例：&#10;夜空に輝く星よ&#10;その光よ消えないで" oninput="parseLyrics()"></textarea>
-  </div>
-
-  <div class="input-section">
-    <div class="slabel">③ タイムコード設定</div>
-    <button class="btn-auto" onclick="autoTimecodesGroq()">⚡ Groqタイムコード自動設定</button>
-    <div style="font-size:11px;color:var(--text2)">再生中に ⏱ をクリックして各行のタイミングを設定</div>
-  </div>
-
-  <div class="tclist" id="tcList"></div>
-</div>
-
-<!-- ===== CENTER PREVIEW ===== -->
-<div class="preview-panel">
-  <div class="prev-toolbar">
-    <span class="plabel">RATIO:</span>
-    <select id="ratioSel" onchange="changeRatio(this.value)">
-      <option value="169">16:9 横型</option>
-      <option value="916">9:16 縦型</option>
-      <option value="11">1:1 正方形</option>
-    </select>
-    <button onclick="previewPlay()" style="margin-left:auto">▶ プレビュー再生</button>
-  </div>
-  <div class="stage-wrap">
-    <div class="stage r169" id="stage">
-      <div class="sbg" id="stageBg"></div>
-      <canvas class="wcanvas" id="wcanvas"></canvas>
-      <div class="vizbar" id="vizbar"></div>
-      <div class="scontent" id="scontent">
-        <div class="lprev" id="lprev"></div>
-        <div class="ldisp" id="lcur" style="font-size:32px;font-weight:900;color:white">歌詞がここに表示されます</div>
-        <div class="lnext" id="lnext"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== RIGHT STYLE PANEL ===== -->
-<div class="style-panel">
-  <div class="panel-title">スタイル編集 <span class="tag-pill">DESIGN</span></div>
-
-  <!-- BG -->
-  <div class="style-group">
-    <div class="sgt">BACKGROUND</div>
-    <div class="bg-type-row">
-      <button class="bgtbtn active" id="bt-solid" onclick="setBgType('solid',this)">ソリッド</button>
-      <button class="bgtbtn" id="bt-gradient" onclick="setBgType('gradient',this)">グラデ</button>
-      <button class="bgtbtn" id="bt-media" onclick="setBgType('media',this)">📂 メディア</button>
-      <button class="bgtbtn" id="bt-particle" onclick="setBgType('particle',this)">パーティクル</button>
-    </div>
-
-    <!-- Solid -->
-    <div id="ctrl-solid">
-      <div class="color-row"><label>背景色</label><input type="color" id="bgColor" value="#0a0a0f" oninput="applyBg()"></div>
-    </div>
-
-    <!-- Gradient -->
-    <div id="ctrl-gradient" style="display:none">
-      <div class="grad-stops">
-        <input type="color" id="grad1" value="#1a0533" oninput="applyBg()" style="flex:1">
-        <span style="color:var(--text2);font-size:12px">→</span>
-        <input type="color" id="grad2" value="#0a1628" oninput="applyBg()" style="flex:1">
-      </div>
-      <select class="ss" id="gradDir" onchange="applyBg()">
-        <option value="135deg">対角線</option>
-        <option value="to right">横</option>
-        <option value="to bottom">縦</option>
-        <option value="45deg">斜め45°</option>
-      </select>
-    </div>
-
-    <!-- Media layers -->
-    <div id="ctrl-media" style="display:none">
-      <div style="display:flex;gap:6px;margin-bottom:8px">
-        <button class="ml-add" onclick="document.getElementById('imgInput').click()">📷 画像</button>
-        <button class="ml-add" onclick="document.getElementById('vidInput').click()">🎬 動画</button>
-        <button class="ml-add" onclick="clearLayers()" style="flex:0;padding:8px 10px">🗑</button>
-      </div>
-      <input type="file" id="imgInput" accept="image/*" multiple style="display:none" onchange="addLayers(event,'image')">
-      <input type="file" id="vidInput" accept="video/*" multiple style="display:none" onchange="addLayers(event,'video')">
-      <div style="font-size:10px;color:var(--text2);margin-bottom:8px;text-align:center">↕ ドラッグで並び替え · 複数同時追加対応</div>
-      <div id="layerList" style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px;min-height:60px">
-        <div class="empty-msg">📷 画像 / 🎬 動画を追加してください</div>
-      </div>
-      <div id="layerEditor" style="display:none;border-top:1px solid var(--border);padding-top:10px;margin-top:4px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <div class="slabel" style="margin:0">📝 レイヤー設定</div>
-          <span id="edLayerName" style="font-size:10px;color:var(--accent2);font-family:'Space Mono',monospace;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-        </div>
-        <div class="slabel">切替トランジション</div>
-        <select class="ss" id="lyrTrans" onchange="updateLayer('transition',this.value)">
-          <option value="cut">✂ カット</option>
-          <option value="fade" selected>◎ フェード</option>
-          <option value="dissolve">✨ ディゾルブ</option>
-          <option value="slide-left">← スライド左</option>
-          <option value="slide-right">→ スライド右</option>
-          <option value="zoom">⊕ ズーム</option>
-          <option value="wipe-down">↓ ワイプ</option>
-        </select>
-        <button class="pbtn" onclick="previewTrans()">▶ トランジションをプレビュー</button>
-        <div class="slabel">表示時間</div>
-        <select class="ss" id="lyrDurMode" onchange="updateLayer('durationMode',this.value);toggleDurInput(this.value)">
-          <option value="equal">均等分割</option>
-          <option value="fixed">固定秒数</option>
-          <option value="loop">ループ（動画）</option>
-        </select>
-        <div id="durInput" style="display:none;margin-bottom:8px">
-          <div class="ctrl-row">
-            <span class="ctrl-label">秒数</span>
-            <input type="range" id="lyrDurSec" min="1" max="60" value="10" oninput="updateLayer('durationSec',this.value);this.nextElementSibling.textContent=this.value+'s'">
-            <span class="ctrl-val">10s</span>
-          </div>
-        </div>
-        <div class="ctrl-row"><span class="ctrl-label">暗さ</span><input type="range" id="lyrDim" min="0" max="90" value="40" oninput="updateLayer('dim',this.value);this.nextElementSibling.textContent=this.value+'%'"><span class="ctrl-val">40%</span></div>
-        <div class="ctrl-row"><span class="ctrl-label">ぼかし</span><input type="range" id="lyrBlur" min="0" max="20" value="0" oninput="updateLayer('blur',this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="ctrl-val">0px</span></div>
-        <div class="ctrl-row"><span class="ctrl-label">不透明度</span><input type="range" id="lyrOpac" min="10" max="100" value="100" oninput="updateLayer('opacity',this.value);this.nextElementSibling.textContent=this.value+'%'"><span class="ctrl-val">100%</span></div>
-        <div class="slabel" style="margin-top:6px">🎥 モーション</div>
-        <div class="grid3" id="motionGrid">
-          <div class="abtn active" data-m="none" onclick="updateLayer('motion','none');selMotion(this)">OFF</div>
-          <div class="abtn" data-m="zoomIn" onclick="updateLayer('motion','zoomIn');selMotion(this)">🔍ズームイン</div>
-          <div class="abtn" data-m="zoomOut" onclick="updateLayer('motion','zoomOut');selMotion(this)">🔎ズームアウト</div>
-          <div class="abtn" data-m="panL" onclick="updateLayer('motion','panL');selMotion(this)">←パン左</div>
-          <div class="abtn" data-m="panR" onclick="updateLayer('motion','panR');selMotion(this)">→パン右</div>
-          <div class="abtn" data-m="panU" onclick="updateLayer('motion','panU');selMotion(this)">↑パン上</div>
-          <div class="abtn" data-m="panD" onclick="updateLayer('motion','panD');selMotion(this)">↓パン下</div>
-          <div class="abtn" data-m="ken" onclick="updateLayer('motion','ken');selMotion(this)">🎬ケンバーンズ</div>
-          <div class="abtn" data-m="pulse" onclick="updateLayer('motion','pulse');selMotion(this)">💓パルス</div>
-          <div class="abtn" data-m="wave" onclick="updateLayer('motion','wave');selMotion(this)">〜ウェーブ</div>
-        </div>
-        <div class="ctrl-row"><span class="ctrl-label">モーション速度</span><input type="range" id="lyrMotSpd" min="0.1" max="3" step="0.1" value="1" oninput="updateLayer('motionSpeed',this.value);this.nextElementSibling.textContent=this.value+'×'"><span class="ctrl-val">1×</span></div>
-      </div>
-      <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px">
-        <div class="slabel">再生設定</div>
-        <select class="ss" id="playMode" onchange="restartBgLoop()">
-          <option value="sequence">順番に切替</option>
-          <option value="random">ランダム</option>
-        </select>
-        <div style="display:flex;gap:6px;margin-top:6px">
-          <button class="ml-add" onclick="prevLayer()">◀ 前へ</button>
-          <button class="ml-add" onclick="nextLayer()">次へ ▶</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Particle -->
-    <div id="ctrl-particle" style="display:none">
-      <div class="ptype-grid" id="ptypeGrid">
-        <div class="ptbtn active" onclick="setPType('dots',this)">✦ ドット</div>
-        <div class="ptbtn" onclick="setPType('stars',this)">★ スター</div>
-        <div class="ptbtn" onclick="setPType('snow',this)">❄ 雪</div>
-        <div class="ptbtn" onclick="setPType('fire',this)">🔥 火</div>
-        <div class="ptbtn" onclick="setPType('bubbles',this)">○ バブル</div>
-        <div class="ptbtn" onclick="setPType('sparks',this)">✺ 花火</div>
-      </div>
-      <div class="color-row"><label>パーティクル色</label><input type="color" id="ptColor" value="#7c3aed" oninput="restartParticles()"></div>
-      <div class="color-row"><label>背景色</label><input type="color" id="ptBgColor" value="#000000" oninput="applyBg()"></div>
-      <div class="ctrl-row"><span class="ctrl-label">密度</span><input type="range" id="ptDensity" min="20" max="200" value="60" oninput="restartParticles();this.nextElementSibling.textContent=this.value"><span class="ctrl-val">60</span></div>
-    </div>
-  </div>
-
-  <!-- Typography -->
-  <div class="style-group">
-    <div class="sgt">TYPOGRAPHY</div>
-    <div class="slabel">フォント</div>
-    <select class="ss" id="fontFam" onchange="applyText()">
-      <option value="'Noto Sans JP',sans-serif">Noto Sans JP（標準）</option>
-      <option value="'Bebas Neue',cursive">Bebas Neue（インパクト）</option>
-      <option value="'Space Mono',monospace">Space Mono（モノスペース）</option>
-      <option value="Georgia,serif">Georgia（セリフ）</option>
-      <option value="serif">明朝体</option>
-    </select>
-    <div class="ctrl-row"><span class="ctrl-label">メインサイズ</span><input type="range" id="fontSize" min="16" max="80" value="32" oninput="applyText();this.nextElementSibling.textContent=this.value+'px'"><span class="ctrl-val">32px</span></div>
-    <div class="ctrl-row"><span class="ctrl-label">行間</span><input type="range" id="lineH" min="1" max="2.5" step="0.1" value="1.4" oninput="applyText();this.nextElementSibling.textContent=this.value"><span class="ctrl-val">1.4</span></div>
-    <div class="ctrl-row"><span class="ctrl-label">字間</span><input type="range" id="letterSp" min="-2" max="20" step="0.5" value="0" oninput="applyText();this.nextElementSibling.textContent=this.value+'px'"><span class="ctrl-val">0px</span></div>
-    <div class="color-row"><label>文字色</label><input type="color" id="textColor" value="#ffffff" oninput="applyText()"></div>
-    <div class="slabel">太さ</div>
-    <select class="ss" id="fontW" onchange="applyText()">
-      <option value="400">Regular</option><option value="700">Bold</option><option value="900" selected>Black</option>
-    </select>
-    <div class="slabel">配置</div>
-    <select class="ss" id="textAlign" onchange="applyText()">
-      <option value="center">中央揃え</option><option value="left">左揃え</option><option value="right">右揃え</option>
-    </select>
-  </div>
-
-  <!-- Text Effects -->
-  <div class="style-group">
-    <div class="sgt">TEXT EFFECTS</div>
-    <div class="color-row"><label>シャドウ色</label><input type="color" id="shadowColor" value="#7c3aed" oninput="applyText()"></div>
-    <div class="ctrl-row"><span class="ctrl-label">シャドウ強度</span><input type="range" id="shadowBlur" min="0" max="60" value="20" oninput="applyText();this.nextElementSibling.textContent=this.value+'px'"><span class="ctrl-val">20px</span></div>
-    <div class="color-row"><label>ストローク色</label><input type="color" id="strokeColor" value="#000000" oninput="applyText()"></div>
-    <div class="ctrl-row"><span class="ctrl-label">ストローク幅</span><input type="range" id="strokeW" min="0" max="8" value="0" step="0.5" oninput="applyText();this.nextElementSibling.textContent=this.value+'px'"><span class="ctrl-val">0px</span></div>
-    <div class="slabel">グラデーション文字</div>
-    <div class="swatch-row">
-      <div class="swatch active" style="background:none;border:1px solid var(--text2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text2)" onclick="setGrad('none',this)">OFF</div>
-      <div class="swatch" style="background:linear-gradient(90deg,#fff,#aaa)" onclick="setGrad('white',this)"></div>
-      <div class="swatch" style="background:linear-gradient(90deg,#a855f7,#06b6d4)" onclick="setGrad('pc',this)"></div>
-      <div class="swatch" style="background:linear-gradient(90deg,#f59e0b,#ef4444)" onclick="setGrad('gr',this)"></div>
-      <div class="swatch" style="background:linear-gradient(90deg,#22c55e,#06b6d4)" onclick="setGrad('gc',this)"></div>
-      <div class="swatch" style="background:linear-gradient(90deg,#ec4899,#f59e0b)" onclick="setGrad('pg',this)"></div>
-    </div>
-  </div>
-
-  <!-- Animation -->
-  <div class="style-group">
-    <div class="sgt">🎬 ANIMATION</div>
-    <div class="tabtrow">
-      <button class="atab active" onclick="switchTab('enter',this)">登場</button>
-      <button class="atab" onclick="switchTab('exit',this)">退場</button>
-      <button class="atab" onclick="switchTab('char',this)">文字</button>
-      <button class="atab" onclick="switchTab('loop',this)">ループ</button>
-      <button class="atab" onclick="switchTab('speed',this)">速度</button>
-    </div>
-
-    <div class="tabpane show" id="tab-enter">
-      <div class="grid3" id="enterGrid">
-        <div class="abtn active" onclick="setEnter('fadeUp',this)">↑フェードアップ</div>
-        <div class="abtn" onclick="setEnter('fadeDown',this)">↓フェードダウン</div>
-        <div class="abtn" onclick="setEnter('fadeIn',this)">◎フェードイン</div>
-        <div class="abtn" onclick="setEnter('blurIn',this)">◈ブラーイン</div>
-        <div class="abtn" onclick="setEnter('scaleIn',this)">⊕ズームイン</div>
-        <div class="abtn" onclick="setEnter('scaleInBig',this)">⊖ズームアウト</div>
-        <div class="abtn" onclick="setEnter('slideLeft',this)">←スライド左</div>
-        <div class="abtn" onclick="setEnter('slideRight',this)">→スライド右</div>
-        <div class="abtn" onclick="setEnter('bounceIn',this)">⤻バウンス</div>
-        <div class="abtn" onclick="setEnter('spinIn',this)">↻スピン</div>
-        <div class="abtn" onclick="setEnter('flipInX',this)">↕フリップX</div>
-        <div class="abtn" onclick="setEnter('flipInY',this)">↔フリップY</div>
-        <div class="abtn" onclick="setEnter('dropIn',this)">⬇ドロップ</div>
-        <div class="abtn" onclick="setEnter('typewriter',this)">▌タイプ</div>
-        <div class="abtn" onclick="setEnter('glitch',this)">⚡グリッチ</div>
-        <div class="abtn" onclick="setEnter('shake',this)">↯シェイク</div>
-        <div class="abtn" onclick="setEnter('reveal',this)">▬リビール</div>
-      </div>
-      <button class="pbtn" onclick="previewEnter()">▶ 登場アニメをプレビュー</button>
-    </div>
-
-    <div class="tabpane" id="tab-exit">
-      <div class="grid3" id="exitGrid">
-        <div class="abtn active" onclick="setExit('fadeOut',this)">◎フェードアウト</div>
-        <div class="abtn" onclick="setExit('fadeDown',this)">↓フェードダウン</div>
-        <div class="abtn" onclick="setExit('fadeUp',this)">↑フェードアップ</div>
-        <div class="abtn" onclick="setExit('scaleOut',this)">⊖ズームアウト</div>
-        <div class="abtn" onclick="setExit('scaleBig',this)">⊕スケール拡大</div>
-        <div class="abtn" onclick="setExit('slideLeft',this)">←スライド左</div>
-        <div class="abtn" onclick="setExit('slideRight',this)">→スライド右</div>
-        <div class="abtn" onclick="setExit('blur',this)">◈ブラーアウト</div>
-        <div class="abtn" onclick="setExit('flipOut',this)">↕フリップ</div>
-      </div>
-      <div class="slabel" style="margin-top:8px">最後の行の消えるタイミング</div>
-      <select class="ss" id="lastFade">
-        <option value="never">消えない</option>
-        <option value="2">曲終了の2秒前</option>
-        <option value="5">曲終了の5秒前</option>
-        <option value="10">曲終了の10秒前</option>
-      </select>
-      <button class="pbtn" onclick="previewExit()">▶ 退場アニメをプレビュー</button>
-    </div>
-
-    <div class="tabpane" id="tab-char">
-      <div style="font-size:10px;color:var(--text2);margin-bottom:8px">文字を1文字ずつアニメーション</div>
-      <div class="grid3" id="charGrid">
-        <div class="abtn active" onclick="setChar('none',this)">OFF</div>
-        <div class="abtn" onclick="setChar('charFall',this)">⬇落下</div>
-        <div class="abtn" onclick="setChar('charSlide',this)">↑スライド</div>
-        <div class="abtn" onclick="setChar('charScale',this)">⊕スケール</div>
-        <div class="abtn" onclick="setChar('charFlip',this)">↔フリップ</div>
-        <div class="abtn" onclick="setChar('charGlitch',this)">⚡グリッチ</div>
-        <div class="abtn" onclick="setChar('charBounce',this)">〜バウンス</div>
-        <div class="abtn" onclick="setChar('charWave',this)">🌊ウェーブ</div>
-        <div class="abtn" onclick="setChar('charScatter',this)">✦スキャッター</div>
-        <div class="abtn" onclick="setChar('charSplit',this)">⬆⬇スプリット</div>
-        <div class="abtn" onclick="setChar('charBounceIn',this)">↓バウンス着地</div>
-        <div class="abtn" onclick="setChar('charZoomRush',this)">⊕ズームラッシュ</div>
-      </div>
-      <div class="ctrl-row" style="margin-top:8px"><span class="ctrl-label">文字間ディレイ</span><input type="range" id="charDelay" min="10" max="200" value="50" oninput="this.nextElementSibling.textContent=this.value+'ms'"><span class="ctrl-val">50ms</span></div>
-      <button class="pbtn" onclick="previewEnter()">▶ 文字アニメをプレビュー</button>
-    </div>
-
-    <div class="tabpane" id="tab-loop">
-      <div style="font-size:10px;color:var(--text2);margin-bottom:8px">表示中にずっとループするエフェクト</div>
-      <div class="grid3" id="loopGrid">
-        <div class="abtn active" onclick="setLoop('none',this)">OFF</div>
-        <div class="abtn" onclick="setLoop('float',this)">🌊フロート</div>
-        <div class="abtn" onclick="setLoop('pulse',this)">💓パルス</div>
-        <div class="abtn" onclick="setLoop('neon',this)">✦ネオン</div>
-        <div class="abtn" onclick="setLoop('glitchLoop',this)">⚡グリッチ</div>
-      </div>
-    </div>
-
-    <div class="tabpane" id="tab-speed">
-      <div class="slabel">登場・退場アニメの速さ</div>
-      <div class="speed-row">
-        <button class="spdbtn" onclick="setAnimSpd(.2,this)">0.2×<br>超速</button>
-        <button class="spdbtn" onclick="setAnimSpd(.4,this)">0.4×<br>速い</button>
-        <button class="spdbtn active" onclick="setAnimSpd(1,this)">1×<br>標準</button>
-        <button class="spdbtn" onclick="setAnimSpd(1.8,this)">1.8×<br>遅め</button>
-        <button class="spdbtn" onclick="setAnimSpd(3,this)">3×<br>スロー</button>
-      </div>
-      <div class="ctrl-row"><span class="ctrl-label">カスタム</span><input type="range" id="animSpdSlider" min="0.1" max="4" step="0.1" value="0.5" oninput="setAnimSpdVal(this.value);this.nextElementSibling.textContent=this.value+'s'"><span class="ctrl-val">0.5s</span></div>
-      <div class="slabel" style="margin-top:8px">ループの速さ</div>
-      <div class="ctrl-row"><span class="ctrl-label">周期</span><input type="range" id="loopSpdSlider" min="0.5" max="6" step="0.1" value="2" oninput="setLoopSpd(this.value);this.nextElementSibling.textContent=this.value+'s'"><span class="ctrl-val">2s</span></div>
-    </div>
-
-    <div class="ctrl-row" style="margin-top:8px">
-      <span class="ctrl-label">前後行を表示</span>
-      <input type="checkbox" id="showCtx" checked onchange="showLine(curIdx)">
-    </div>
-  </div>
-
-  <!-- Visualizer -->
-  <div class="style-group">
-    <div class="sgt">VISUALIZER</div>
-    <div class="btn-row" style="margin-bottom:10px">
-      <button class="visbtn active" id="vis-none" onclick="setVis('none',this)">なし</button>
-      <button class="visbtn" id="vis-bar" onclick="setVis('bar',this)">バー</button>
-      <button class="visbtn" id="vis-wave" onclick="setVis('wave',this)">波形</button>
-      <button class="visbtn" id="vis-circle" onclick="setVis('circle',this)">円形</button>
-    </div>
-    <div class="color-row"><label>ビジュアライザー色</label><input type="color" id="vizColor" value="#7c3aed" oninput="applyViz()"></div>
-  </div>
-
-  <!-- Overlay -->
-  <div class="style-group">
-    <div class="sgt">OVERLAY</div>
-    <div class="color-row"><label>オーバーレイ色</label><input type="color" id="overlayColor" value="#000000" oninput="applyBg()"></div>
-    <div class="ctrl-row"><span class="ctrl-label">透明度</span><input type="range" id="overlayOpac" min="0" max="80" value="0" oninput="applyBg();this.nextElementSibling.textContent=this.value+'%'"><span class="ctrl-val">0%</span></div>
-  </div>
-
-  <button class="export-btn" onclick="exportVideo()">🎬 EXPORT VIDEO</button>
-  <div class="sub-btn-row">
-    <button class="sub-btn" onclick="showThumbnailModal()">🖼 サムネイル生成</button>
-    <button class="sub-btn yt" onclick="showYouTubeUploadModal()">▶ YouTube Upload</button>
-  </div>
-  <div style="padding:0 16px 20px;text-align:center;font-size:10px;color:var(--text2);line-height:1.6">
-    WebM（即時）またはMP4（FFmpeg変換）<br>Chrome / Edge 推奨
-  </div>
-</div>
-</div><!-- /workspace -->
-
 <script>
 let audioFile = null;
 'use strict';
@@ -1101,6 +362,10 @@ var _expLastIdx = -99;
 var _expExitText = '';
 var _expCurText = '';
 var selectedExportFmt = 'webm';
+
+// export state
+var exportCurIdx = -1;
+var exportBgVideos = {};
 
 // DOM refs
 var audioEl = document.getElementById('audioEl');
@@ -1188,7 +453,7 @@ function renderTcList() {
     txt.textContent = line;
     var del = document.createElement('span');
     del.className = 'tcdel';
-    del.textContent = '✕';
+    del.textContent = '✁E;
     del.onclick = function(ev) { ev.stopPropagation(); timecodes[i] = null; renderTcList(); };
     item.appendChild(badge); item.appendChild(txt); item.appendChild(del);
     item.onclick = function() { jumpTo(i); };
@@ -1199,7 +464,7 @@ function setTc(i) {
   if (!audioEl.src) { showToast('先に音声ファイルを読み込んでください'); return; }
   timecodes[i] = audioEl.currentTime;
   renderTcList();
-  showToast('行' + (i+1) + ' → ' + fmtT(timecodes[i]) + ' にセット');
+  showToast('衁E + (i+1) + ' ↁE' + fmtT(timecodes[i]) + ' にセチE��');
 }
 function jumpTo(i) {
   if (timecodes[i] !== null) audioEl.currentTime = timecodes[i];
@@ -1211,20 +476,35 @@ function autoTimecodes() {
   var step = dur / lyrics.length;
   timecodes = lyrics.map(function(_,i){ return +(i * step).toFixed(2); });
   renderTcList();
-  showToast('タイムコードを均等に設定しました');
+  showToast('タイムコードを坁E��に設定しました');
 }
 function updateCurLine() {
   var t = audioEl.currentTime;
-  var idx = -1;
-  for (var i = 0; i < timecodes.length; i++) {
-    if (timecodes[i] !== null && timecodes[i] <= t) idx = i;
-  }
+  var idx = getLineIdxByTime(t);
   if (idx !== curIdx) {
     showLine(idx);
     renderTcList();
     var el = document.getElementById('tc-' + idx);
     if (el) el.scrollIntoView({ block:'nearest', behavior:'smooth' });
   }
+}
+
+function getLineIdxByTime(t) {
+  var idx = -1;
+  if (!lyrics.length) return -1;
+  if (!timecodes.some(function(v){return v !== null && v !== undefined;})) {
+    var dur = audioEl.duration || (lyrics.length * 2);
+    if (dur <= 0) return -1;
+    var step = dur / lyrics.length;
+    idx = Math.min(lyrics.length - 1, Math.floor(t / step));
+    return idx;
+  }
+  for (var i = 0; i < timecodes.length; i++) {
+    if (timecodes[i] !== null && timecodes[i] <= t) {
+      idx = i;
+    }
+  }
+  return idx;
 }
 
 // ===========================
@@ -1604,11 +884,11 @@ function addLayers(e, type) {
   renderLayers();
   if (layers.length > 0) selLayer(layers.length - 1);
   applyBg();
-  showToast(files.length + '個のファイルを追加しました');
+  showToast(files.length + '個�Eファイルを追加しました');
 }
 function clearLayers() {
   if (!layers.length) return;
-  if (!confirm('全レイヤーを削除しますか？')) return;
+  if (!confirm('全レイヤーを削除しますか�E�E)) return;
   layers.forEach(function(l){URL.revokeObjectURL(l.objectURL);});
   layers = []; selLayerIdx = -1; curLayerIdx = 0;
   stopBgLoop(); renderLayers();
@@ -1655,7 +935,7 @@ function renderLayers() {
     var thumb = layer.type==='image'
       ? '<div class="ml-thumb-img" style="background-image:url('+layer.data+')"></div>'
       : '<video class="ml-thumb" src="'+layer.data+'" muted></video>';
-    var durLbl = layer.durationMode==='equal'?'均等':layer.durationMode==='loop'?'ループ':layer.durationSec+'s';
+    var durLbl = layer.durationMode==='equal'?'坁E��E:layer.durationMode==='loop'?'ルーチE:layer.durationSec+'s';
 
     item.innerHTML = (isNow?'<div class="now-badge">NOW PLAYING</div>':'')
       + '<span class="drag-handle">⠿</span>'
@@ -1663,9 +943,9 @@ function renderLayers() {
       + '<div class="ml-info"><div class="ml-name">'+layer.name+'</div><div class="ml-meta">'+(layer.motion!=='none'?'⚡'+layer.motion:'静止')+' · '+durLbl+'</div></div>'
       + '<span class="ml-type '+layer.type+'">'+(layer.type==='image'?'📷':'🎬')+'</span>'
       + '<div class="ml-acts">'
-      + '<button class="lbtn" onclick="mvLayer('+i+',-1,event)" title="上へ">↑</button>'
-      + '<button class="lbtn" onclick="mvLayer('+i+',1,event)" title="下へ">↓</button>'
-      + '<button class="lbtn del" onclick="delLayer('+i+',event)" title="削除">✕</button>'
+      + '<button class="lbtn" onclick="mvLayer('+i+',-1,event)" title="上へ">ↁE/button>'
+      + '<button class="lbtn" onclick="mvLayer('+i+',1,event)" title="下へ">ↁE/button>'
+      + '<button class="lbtn del" onclick="delLayer('+i+',event)" title="削除">✁E/button>'
       + '</div>';
     list.appendChild(item);
   });
@@ -1690,7 +970,7 @@ function selLayer(i) {
   document.getElementById('lyrDurSec').nextElementSibling.textContent = layer.durationSec + 's';
   toggleDurInput(layer.durationMode);
   document.getElementById('lyrMotSpd').value = layer.motionSpeed;
-  document.getElementById('lyrMotSpd').nextElementSibling.textContent = layer.motionSpeed + '×';
+  document.getElementById('lyrMotSpd').nextElementSibling.textContent = layer.motionSpeed + 'ÁE;
   document.querySelectorAll('#motionGrid .abtn').forEach(function(b){b.classList.toggle('active', b.dataset.m === layer.motion);});
   applyBg();
 }
@@ -1724,7 +1004,7 @@ function delLayer(i, e) {
   applyBg();
 }
 function previewTrans() {
-  if (layers.length < 2) { showToast('トランジションのプレビューには2枚以上必要です'); return; }
+  if (layers.length < 2) { showToast('トランジションのプレビューには2枚以上忁E��でぁE); return; }
   var prev = curLayerIdx;
   curLayerIdx = (curLayerIdx + 1) % layers.length;
   stageBg._lastId = null;
@@ -1925,7 +1205,7 @@ function previewPlay() {
 // EXPORT
 // ===========================
 function exportVideo() {
-  if (!audioEl.src) { showToast('音声ファイルが必要です'); return; }
+  if (!audioEl.src) { showToast('音声ファイルが忁E��でぁE); return; }
   if (lyrics.length===0) { showToast('歌詞を入力してください'); return; }
   if (!timecodes.some(function(t){return t!==null;})) { showToast('タイムコードを設定してください'); return; }
   showExportModal();
@@ -1937,13 +1217,13 @@ function showExportModal() {
   modal.className = 'modal-overlay';
   modal.id = 'exportModal';
   modal.innerHTML = '<div class="modal">'
-    + '<h3 style="margin-bottom:14px">🎬 動画エクスポート</h3>'
-    + (!ok ? '<p style="color:var(--red);font-size:12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:8px">⚠️ このブラウザは非対応です。Chrome/EdgeでHTMLを直接開いてください。</p>' : '')
-    + '<div class="export-opt sel" id="opt-webm" onclick="selFmt(\'webm\',this)"><span style="font-size:22px">🎞</span><div><div style="font-weight:700;font-size:13px">WebM（推奨・高速）</div><div style="font-size:11px;color:var(--text2)">ブラウザ内で即時録画</div></div></div>'
-    + '<div class="export-opt" id="opt-mp4" onclick="selFmt(\'mp4\',this)"><span style="font-size:22px">🎥</span><div><div style="font-weight:700;font-size:13px">MP4（FFmpeg変換）</div><div style="font-size:11px;color:var(--text2)">WebM録画後にMP4へ変換（時間がかかります）</div></div></div>'
+    + '<h3 style="margin-bottom:14px">🎬 動画エクスポ�EチE/h3>'
+    + (!ok ? '<p style="color:var(--red);font-size:12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:8px">⚠�E�Eこ�Eブラウザは非対応です、Ehrome/EdgeでHTMLを直接開いてください、E/p>' : '')
+    + '<div class="export-opt sel" id="opt-webm" onclick="selFmt(\'webm\',this)"><span style="font-size:22px">🎞</span><div><div style="font-weight:700;font-size:13px">WebM�E�推奨・高速！E/div><div style="font-size:11px;color:var(--text2)">ブラウザ冁E��即時録画</div></div></div>'
+    + '<div class="export-opt" id="opt-mp4" onclick="selFmt(\'mp4\',this)"><span style="font-size:22px">🎥</span><div><div style="font-weight:700;font-size:13px">MP4�E�EFmpeg変換�E�E/div><div style="font-size:11px;color:var(--text2)">WebM録画後にMP4へ変換�E�時間がかかります！E/div></div></div>'
     + '<div class="modal-actions">'
     + '<button class="btn btn-ghost" onclick="document.getElementById(\'exportModal\').remove()">キャンセル</button>'
-    + (ok ? '<button class="btn btn-primary" onclick="startExport()">🔴 録画開始</button>' : '')
+    + (ok ? '<button class="btn btn-primary" onclick="startExport()">🔴 録画開姁E/button>' : '')
     + '</div></div>';
   document.body.appendChild(modal);
 }
@@ -1996,12 +1276,25 @@ function startRec(fmt) {
       else {
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a'); a.href=url; a.download='lyrics-video.webm'; a.click();
-        showToast('✅ WebMをダウンロードしました');
+        showToast('✁EWebMをダウンロードしました');
         hideExpProg();
         showYTUploadHint();
       }
     };
-    curIdx = -1; audioEl.currentTime = 0;
+    curIdx = -1; exportCurIdx = -1; audioEl.currentTime = 0;
+
+    // Video background preload for export
+    exportBgVideos = {};
+    layers.filter(function(l){return l.type==='video';}).forEach(function(layer){
+      var v = document.createElement('video');
+      v.src = layer.data;
+      v.muted = true; v.loop = true; v.playsInline = true;
+      v.crossOrigin = 'anonymous';
+      v.oncanplay = function(){};
+      v.play().catch(function(){});
+      exportBgVideos[layer.id] = v;
+    });
+
     exportRecorder.start(200);
     audioEl.play(); isPlaying=true; document.getElementById('playBtn').textContent='⏸';
     if (audioCtx && audioCtx.state==='suspended') audioCtx.resume();
@@ -2027,6 +1320,10 @@ function drawExportFrame() {
     var c1=document.getElementById('grad1').value, c2=document.getElementById('grad2').value;
     var grd=ctx.createLinearGradient(0,0,W,H); grd.addColorStop(0,c1); grd.addColorStop(1,c2);
     ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
+  } else if (bgType==='particle') {
+    ctx.fillStyle = document.getElementById('ptBgColor').value || '#000000';
+    ctx.fillRect(0,0,W,H);
+    drawExportParticles(ctx, W, H, t);
   } else if (bgType==='media' && layers.length>0) {
     drawExportBg(ctx,W,H,t);
   } else {
@@ -2051,10 +1348,29 @@ function drawExportFrame() {
     ctx.globalAlpha=1;
   }
 
+  // Wave visualizer
+  if (visType==='wave' && analyser) {
+    var tdata = new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(tdata);
+    drawExportWave(ctx, tdata, W, H);
+  }
+
+  // Circle visualizer
+  if (visType==='circle' && analyser) {
+    var fdata = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(fdata);
+    drawExportCircle(ctx, fdata, W, H);
+  }
+
   // Text with animation
-  var rawTxt = lyrics[curIdx] || '♪';
+  var currentExportTime = t;
+  var currentIndex = getLineIdxByTime(currentExportTime);
+  if (currentIndex < 0) { currentIndex = 0; }
+  exportCurIdx = currentIndex;
+
+  var rawTxt = lyrics[exportCurIdx] || '♪';
   var ENTER_F=15, EXIT_F=12;
-  if (curIdx !== _expLastIdx) {
+  if (exportCurIdx !== _expLastIdx) {
     if (_expLastIdx >= 0 && _expCurText) {
       _expExitText = _expCurText;
       _expAnimPhase = 'exit'; _expAnimFrame = exportFrameN;
@@ -2062,7 +1378,8 @@ function drawExportFrame() {
       _expCurText = rawTxt;
       _expAnimPhase = 'enter'; _expAnimFrame = exportFrameN;
     }
-    _expLastIdx = curIdx;
+    _expLastIdx = exportCurIdx;
+    curIdx = exportCurIdx;
   }
   var displayTxt = _expCurText || '♪';
   var tAlpha=1, tTX=0, tTY=0, tScale=1;
@@ -2118,17 +1435,87 @@ function drawExportFrame() {
     g2.addColorStop(0,gmap[textGrad][0]);g2.addColorStop(1,gmap[textGrad][1]);
     ctx.fillStyle=g2;
   } else {ctx.fillStyle=tc2;}
-  if(stW2>0){ctx.strokeStyle=stC2;ctx.lineWidth=stW2*2;ctx.strokeText(displayTxt,txX,txY,W*.9);}
-  ctx.fillText(displayTxt,txX,txY,W*.9);
+
+  if (charAnim !== 'none' && displayTxt) {
+    drawExportCharText(ctx, displayTxt, txX, txY, W, ta2, charAnim, exportFrameN, stC2, stW2);
+  } else {
+    if(stW2>0){ctx.strokeStyle=stC2;ctx.lineWidth=stW2*2;ctx.strokeText(displayTxt,txX,txY,W*.9);}
+    ctx.fillText(displayTxt,txX,txY,W*.9);
+  }
+
   ctx.shadowBlur=0;
   ctx.restore();
 
   exportRaf = requestAnimationFrame(drawExportFrame);
 }
+
+function drawExportCharText(ctx, text, txX, txY, W, align, charAnim, frame, strokeColor, strokeWidth) {
+  var totalWidth = ctx.measureText(text).width;
+  var x = txX;
+  if (align === 'center') x -= totalWidth / 2;
+  else if (align === 'right') x -= totalWidth;
+
+  for (var i = 0; i < text.length; i++) {
+    var ch = text[i];
+    var chW = ctx.measureText(ch).width;
+    var cx = x + chW / 2;
+    var cy = txY;
+    var offsetY = 0;
+    var offsetX = 0;
+
+    if (charAnim === 'charFall') {
+      offsetY = Math.sin((frame / 20) + i * 0.5) * 10;
+    } else if (charAnim === 'charSlide') {
+      offsetX = Math.sin((frame / 15) + i * 0.65) * 8;
+    } else if (charAnim === 'charScale') {
+      var scale = 1 + Math.sin((frame / 12) + i * 0.4) * 0.08;
+      ctx.save(); ctx.translate(cx,cy); ctx.scale(scale,scale); ctx.translate(-cx,-cy);
+      if (strokeWidth>0) { ctx.strokeStyle=strokeColor; ctx.lineWidth=strokeWidth*2; ctx.strokeText(ch,cx,cy); }
+      ctx.fillText(ch,cx,cy);
+      ctx.restore();
+      x += chW;
+      continue;
+    } else if (charAnim === 'charBounce') {
+      offsetY = Math.abs(Math.sin((frame / 8) + i * 0.7)) * 12 - 6;
+    }
+
+    if (strokeWidth>0) { ctx.strokeStyle=strokeColor; ctx.lineWidth=strokeWidth*2; ctx.strokeText(ch,cx + offsetX,cy + offsetY); }
+    ctx.fillText(ch,cx + offsetX,cy + offsetY);
+
+    x += chW;
+  }
+}
+
 function drawExportBg(ctx, W, H, t) {
-  var idx2 = Math.min(curLayerIdx, layers.length-1);
+  if (layers.length === 0) {
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H); return;
+  }
+
+  // Calculate current layer based on time
+  var totalDur = 0;
+  var hasInfinity = false;
+  layers.forEach(function(l) {
+    var d = getLayerDur(l);
+    if (!isFinite(d)) hasInfinity = true;
+    else totalDur += d;
+  });
+  var idx2 = curLayerIdx >= 0 && curLayerIdx < layers.length ? curLayerIdx : 0;
+
+  if (!hasInfinity) {
+    if (totalDur === 0) totalDur = layers.length * 10; // fallback
+    var elapsed = t % totalDur;
+    var currentDur = 0;
+    for (var i = 0; i < layers.length; i++) {
+      currentDur += getLayerDur(layers[i]);
+      if (elapsed < currentDur) {
+        idx2 = i;
+        break;
+      }
+    }
+  }
+
   var layer = layers[idx2];
-  if (!layer) { ctx.fillStyle='#000';ctx.fillRect(0,0,W,H); return; }
+  if (!layer) { ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H); return; }
   var speed = layer.motionSpeed||1;
   ctx.save(); ctx.translate(W/2,H/2);
   var sc=1, tx2=0, ty2=0;
@@ -2152,9 +1539,71 @@ function drawExportBg(ctx, W, H, t) {
     var dw,dh;
     if (iar>car) { dh=H; dw=dh*iar; } else { dw=W; dh=dw/iar; }
     ctx.drawImage(img2,-dw/2,-dh/2,dw,dh);
+  } else if (layer.type==='video' && exportBgVideos[layer.id] && exportBgVideos[layer.id].readyState >= 2) {
+    var vid2 = exportBgVideos[layer.id];
+    var iar = vid2.videoWidth / vid2.videoHeight || 16/9;
+    var car = W / H;
+    var dw,dh;
+    if (iar > car) { dh = H; dw = dh * iar; } else { dw = W; dh = dw / iar; }
+    ctx.drawImage(vid2, -dw/2, -dh/2, dw, dh);
   } else { ctx.fillStyle='#222'; ctx.fillRect(-W/2,-H/2,W,H); }
   ctx.restore();
   ctx.fillStyle='rgba(0,0,0,'+layer.dim/100+')'; ctx.fillRect(0,0,W,H);
+}
+
+function drawExportParticles(ctx, W, H, t) {
+  var cnt = parseInt(document.getElementById('ptDensity').value) || 60;
+  var col = document.getElementById('ptColor').value;
+  ctx.fillStyle = col;
+  for (var i = 0; i < cnt; i++) {
+    var seed = i * 0.1 + t * 0.05;
+    var x = (Math.sin(seed) * 0.5 + 0.5) * W;
+    var y = (Math.cos(seed * 1.3) * 0.5 + 0.5) * H;
+    var size = (Math.sin(seed * 2) * 0.5 + 0.5) * 3 + 1;
+    ctx.globalAlpha = (Math.sin(seed * 3) * 0.5 + 0.5) * 0.8 + 0.2;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawExportWave(ctx, data, W, H) {
+  var col = document.getElementById('vizColor').value;
+  ctx.strokeStyle = col;
+  ctx.lineWidth = 2;
+  ctx.shadowColor = col;
+  ctx.shadowBlur = 8;
+  ctx.beginPath();
+  for (var i = 0; i < data.length; i++) {
+    var xx = i / data.length * W;
+    var yy = (data[i] / 128) * (H / 2) + H / 2;
+    if (i === 0) ctx.moveTo(xx, yy);
+    else ctx.lineTo(xx, yy);
+  }
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+}
+
+function drawExportCircle(ctx, data, W, H) {
+  var col = document.getElementById('vizColor').value;
+  ctx.strokeStyle = col;
+  ctx.lineWidth = 2;
+  ctx.shadowColor = col;
+  ctx.shadowBlur = 6;
+  var cx = W / 2, cy = H / 2, r = 20;
+  ctx.beginPath();
+  for (var i = 0; i < data.length; i++) {
+    var angle = i / data.length * Math.PI * 2;
+    var amp = data[i] / 255 * 30;
+    var xx = cx + (r + amp) * Math.cos(angle);
+    var yy = cy + (r + amp) * Math.sin(angle);
+    if (i === 0) ctx.moveTo(xx, yy);
+    else ctx.lineTo(xx, yy);
+  }
+  ctx.closePath();
+  ctx.stroke();
+  ctx.shadowBlur = 0;
 }
 
 async function convertToMp4(blob) {
@@ -2170,12 +1619,12 @@ async function convertToMp4(blob) {
     var mp4blob = new Blob([data2.buffer],{type:'video/mp4'});
     var url2 = URL.createObjectURL(mp4blob);
     var a2 = document.createElement('a'); a2.href=url2; a2.download='lyrics-video.mp4'; a2.click();
-    showToast('✅ MP4をダウンロードしました');
+    showToast('✁EMP4をダウンロードしました');
     hideExpProg();
     showYTUploadHint();
   } catch(err) {
     console.error(err);
-    showToast('⚠️ MP4変換失敗。WebMとして保存します');
+    showToast('⚠�E�EMP4変換失敗。WebMとして保存しまぁE);
     hideExpProg();
     var url3=URL.createObjectURL(blob);
     var a3=document.createElement('a'); a3.href=url3; a3.download='lyrics-video.webm'; a3.click();
@@ -2185,7 +1634,7 @@ function showExpProg() {
   var el = document.createElement('div');
   el.id = 'expProg';
   el.className = 'exp-prog';
-  el.innerHTML = '<span id="expIcon" style="display:inline-block;animation:spin 1s linear infinite">⏺</span><span id="expMsg">🔴 録画中... 音楽終了で自動停止</span><button class="exp-stop" onclick="stopExport()">停止</button>';
+  el.innerHTML = '<span id="expIcon" style="display:inline-block;animation:spin 1s linear infinite">⏺</span><span id="expMsg">🔴 録画中... 音楽終亁E��自動停止</span><button class="exp-stop" onclick="stopExport()">停止</button>';
   document.body.appendChild(el);
 }
 function updateExpProg(msg) { var el=document.getElementById('expMsg'); if(el)el.textContent=msg; }
@@ -2213,7 +1662,7 @@ function showToast(msg) {
 function showHelp() {
   var m = document.createElement('div');
   m.className='modal-overlay';
-  m.innerHTML='<div class="modal"><h3>📖 使い方</h3><p style="font-size:13px;line-height:1.9"><b style="color:var(--accent2)">① 音声アップロード</b><br>左パネルで音楽ファイルをアップロード<br><br><b style="color:var(--accent2)">② 歌詞入力</b><br>1行ずつ歌詞を入力<br><br><b style="color:var(--accent2)">③ タイムコード設定</b><br>⚡自動設定 or 再生中に⏱をクリック<br><br><b style="color:var(--accent2)">④ スタイル編集</b><br>右パネルでデザインをカスタマイズ<br><br><b style="color:var(--accent2)">⑤ エクスポート</b><br>WebM or MP4で保存（Chrome推奨）</p><div class="modal-actions"><button class="btn btn-primary" onclick="this.closest(\'.modal-overlay\').remove()">OK</button></div></div>';
+  m.innerHTML='<div class="modal"><h3>📖 使ぁE��</h3><p style="font-size:13px;line-height:1.9"><b style="color:var(--accent2)">① 音声アチE�EローチE/b><br>左パネルで音楽ファイルをアチE�EローチEbr><br><b style="color:var(--accent2)">② 歌詞�E劁E/b><br>1行ずつ歌詞を入劁Ebr><br><b style="color:var(--accent2)">③ タイムコード設宁E/b><br>⚡自動設宁Eor 再生中に⏱をクリチE��<br><br><b style="color:var(--accent2)">④ スタイル編雁E/b><br>右パネルでチE��インをカスタマイズ<br><br><b style="color:var(--accent2)">⑤ エクスポ�EチE/b><br>WebM or MP4で保存！Ehrome推奨�E�E/p><div class="modal-actions"><button class="btn btn-primary" onclick="this.closest(\'.modal-overlay\').remove()">OK</button></div></div>';
   document.body.appendChild(m);
 }
 
@@ -2247,7 +1696,7 @@ document.getElementById('layerList').addEventListener('drop', function(e){
       added++;
     }
   });
-  if (added>0) { renderLayers(); selLayer(layers.length-1); applyBg(); showToast(added+'個のファイルを追加しました'); }
+  if (added>0) { renderLayers(); selLayer(layers.length-1); applyBg(); showToast(added+'個�Eファイルを追加しました'); }
 });
 
 // ===========================
@@ -2280,7 +1729,7 @@ function buildThumbnailCanvas(cb) {
     cb(canvas);
   }
 
-  // アップロードされた背景画像が優先
+  // アチE�Eロードされた背景画像が優允E
   if (thumbBgImageEl) {
     var iar = thumbBgImageEl.naturalWidth / thumbBgImageEl.naturalHeight, car = W / H;
     var dw, dh;
@@ -2342,9 +1791,9 @@ function _drawThumbText(ctx, W, H) {
   var stW = parseFloat(document.getElementById('strokeW').value) * (W / 400);
   var gmap = {'none':null,'white':['#fff','#aaa'],'pc':['#a855f7','#06b6d4'],'gr':['#f59e0b','#ef4444'],'gc':['#22c55e','#06b6d4'],'pg':['#ec4899','#f59e0b']};
 
-  // タイトルのフォントサイズ（基準）
+  // タイトルのフォントサイズ�E�基準！E
   var titleFs = Math.round(parseInt(document.getElementById('fontSize').value) * (W / 400));
-  // タイトルと歌手名を両方表示する場合の縦位置を計算
+  // タイトルと歌手名を両方表示する場合�E縦位置を計箁E
   var hasArtist = artist.length > 0;
   var titleY  = hasArtist ? H * 0.46 : H / 2 + titleFs * 0.35;
   var sepY    = titleY + titleFs * 0.6;
@@ -2366,7 +1815,7 @@ function _drawThumbText(ctx, W, H) {
     ctx.shadowBlur = 0;
   }
 
-  // ---- セパレーター（タイトル＋歌手名の両方がある場合のみ） ----
+  // ---- セパレーター�E�タイトル�E�歌手名�E両方がある場合�Eみ�E�E----
   if (title && hasArtist) {
     var sepW = Math.min(260, W * 0.22);
     if (textGrad !== 'none' && gmap[textGrad]) {
@@ -2403,19 +1852,19 @@ function _renderThumbModal() {
   var hasBg = !!thumbBgImageEl;
   var dimVal = 45;
   modal.innerHTML = '<div class="yt-modal">'
-    + '<h3>🖼 サムネイル生成</h3>'
+    + '<h3>🖼 サムネイル生�E</h3>'
     + '<img class="thumb-preview-img" id="thumbImg" src="' + thumbnailDataUrl + '">'
 
-    // 背景画像アップロード
-    + '<div class="yt-field"><label>背景画像</label>'
+    // 背景画像アチE�EローチE
+    + '<div class="yt-field"><label>背景画僁E/label>'
     + '<div class="thumb-bg-zone' + (hasBg ? ' has-img' : '') + '" id="thumbBgZone">'
     + '<input type="file" accept="image/*" onchange="setThumbBg(event)">'
-    + '<span id="thumbBgLabel">' + (hasBg ? '✅ 画像設定済み（変更するにはクリック）' : '📷 クリックして背景画像をアップロード') + '</span>'
+    + '<span id="thumbBgLabel">' + (hasBg ? '✁E画像設定済み�E�変更するにはクリチE���E�E : '📷 クリチE��して背景画像をアチE�EローチE) + '</span>'
     + '</div>'
-    + (hasBg ? '<button style="font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;margin-bottom:8px" onclick="clearThumbBg()">✕ 背景画像を削除</button>' : '')
+    + (hasBg ? '<button style="font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;margin-bottom:8px" onclick="clearThumbBg()">✁E背景画像を削除</button>' : '')
     + '</div>'
 
-    // 暗さスライダー（画像アップ時のみ有効）
+    // 暗さスライダー�E�画像アチE�E時�Eみ有効�E�E
     + '<div class="yt-field" id="thumbDimWrap" style="' + (!hasBg ? 'opacity:.4;pointer-events:none' : '') + '">'
     + '<label>背景の暗さ</label>'
     + '<div style="display:flex;align-items:center;gap:10px">'
@@ -2423,20 +1872,20 @@ function _renderThumbModal() {
     + '<span style="font-size:11px;color:var(--accent2);font-family:\'Space Mono\',monospace;min-width:36px">' + dimVal + '%</span>'
     + '</div></div>'
 
-    // タイトル・アーティスト
+    // タイトル・アーチE��スチE
     + '<div class="yt-field"><label>曲タイトル</label>'
-    + '<input type="text" id="thumbTitleInput" placeholder="曲のタイトルを入力" value="' + _escAttr(thumbSongTitle) + '"></div>'
-    + '<div class="yt-field"><label>歌手名 / アーティスト名</label>'
-    + '<input type="text" id="thumbArtistInput" placeholder="アーティスト名を入力" value="' + _escAttr(thumbArtistName) + '"></div>'
+    + '<input type="text" id="thumbTitleInput" placeholder="曲のタイトルを�E劁E value="' + _escAttr(thumbSongTitle) + '"></div>'
+    + '<div class="yt-field"><label>歌手吁E/ アーチE��スト名</label>'
+    + '<input type="text" id="thumbArtistInput" placeholder="アーチE��スト名を�E劁E value="' + _escAttr(thumbArtistName) + '"></div>'
 
     + '<div class="yt-btn-row">'
-    + '<button class="pbtn" style="flex:1;margin:0" onclick="refreshThumb()">🔄 再生成</button>'
-    + '<button class="pbtn" style="flex:1;margin:0" onclick="downloadThumbnail()">💾 ダウンロード</button>'
+    + '<button class="pbtn" style="flex:1;margin:0" onclick="refreshThumb()">🔄 再生戁E/button>'
+    + '<button class="pbtn" style="flex:1;margin:0" onclick="downloadThumbnail()">💾 ダウンローチE/button>'
     + '</div>'
     + '<hr class="yt-divider">'
     + '<div style="display:flex;gap:10px;justify-content:flex-end">'
-    + '<button class="btn btn-ghost" onclick="this.closest(\'.yt-modal-wrap\').remove()">閉じる</button>'
-    + '<button class="btn btn-primary" onclick="this.closest(\'.yt-modal-wrap\').remove();showYouTubeUploadModal()">▶ YouTubeアップロードへ</button>'
+    + '<button class="btn btn-ghost" onclick="this.closest(\'.yt-modal-wrap\').remove()">閉じめE/button>'
+    + '<button class="btn btn-primary" onclick="this.closest(\'.yt-modal-wrap\').remove();showYouTubeUploadModal()">▶ YouTubeアチE�Eロードへ</button>'
     + '</div>'
     + '</div>';
   document.body.appendChild(modal);
@@ -2453,17 +1902,17 @@ function setThumbBg(event) {
     var label = document.getElementById('thumbBgLabel');
     var dimWrap = document.getElementById('thumbDimWrap');
     if (zone) zone.classList.add('has-img');
-    if (label) label.textContent = '✅ ' + file.name + '（変更するにはクリック）';
+    if (label) label.textContent = '✁E' + file.name + '�E�変更するにはクリチE���E�E;
     if (dimWrap) { dimWrap.style.opacity = '1'; dimWrap.style.pointerEvents = 'auto'; }
     refreshThumb();
   };
-  img.onerror = function() { showToast('画像の読み込みに失敗しました'); };
+  img.onerror = function() { showToast('画像�E読み込みに失敗しました'); };
   img.src = url;
 }
 
 function clearThumbBg() {
   thumbBgImageEl = null;
-  showThumbnailModal(); // モーダルを再描画
+  showThumbnailModal(); // モーダルを�E描画
 }
 
 function _escAttr(s) {
@@ -2479,7 +1928,7 @@ function refreshThumb() {
     thumbnailDataUrl = canvas.toDataURL('image/jpeg', 0.92);
     var img = document.getElementById('thumbImg');
     if (img) img.src = thumbnailDataUrl;
-    showToast('サムネイルを再生成しました');
+    showToast('サムネイルを�E生�Eしました');
   });
 }
 
@@ -2487,7 +1936,7 @@ function downloadThumbnail() {
   if (!thumbnailDataUrl) { showThumbnailModal(); return; }
   var a = document.createElement('a');
   a.href = thumbnailDataUrl; a.download = 'thumbnail.jpg'; a.click();
-  showToast('✅ サムネイルをダウンロードしました');
+  showToast('✁Eサムネイルをダウンロードしました');
 }
 
 // ===========================
@@ -2503,19 +1952,19 @@ function showYouTubeUploadModal() {
   var modal = document.createElement('div');
   modal.className = 'yt-modal-wrap';
   modal.innerHTML = '<div class="yt-modal">'
-    + '<h3><span style="color:#ff0000;font-size:20px">▶</span> YouTubeにアップロード</h3>'
+    + '<h3><span style="color:#ff0000;font-size:20px">▶</span> YouTubeにアチE�EローチE/h3>'
 
     // Google Client ID
     + '<div class="yt-field"><label>Google OAuth 2.0 Client ID</label>'
     + '<input type="text" id="ytClientId" placeholder="xxxxxxxxxx.apps.googleusercontent.com" value="' + (clientId||'') + '">'
     + '<div style="font-size:10px;color:var(--text2);margin-top:4px;line-height:1.6">'
-    + 'Google Cloud Console → YouTube Data API v3 を有効化 → OAuth 2.0 クライアントIDを作成<br>'
+    + 'Google Cloud Console ↁEYouTube Data API v3 を有効匁EↁEOAuth 2.0 クライアンチEDを作�E<br>'
     + '<span style="color:#f59e0b">⚠ Google Cloud Console で YouTube Data API v3 を有効化してください</span><br>'
-    + '<span style="color:var(--text2)">承認済みJS生成元: ' + location.origin + '</span></div></div>'
+    + '<span style="color:var(--text2)">承認済みJS生�E允E ' + location.origin + '</span></div></div>'
 
     // Auth
     + '<div class="auth-badge ' + (hasAuth ? 'ok' : 'ng') + '" id="ytAuthBadge">'
-    + (hasAuth ? '✅ 認証済み（再認証するには下のボタン）' : '🔒 未認証') + '</div>'
+    + (hasAuth ? '✁E認証済み�E��E認証するには下�Eボタン�E�E : '🔒 未認証') + '</div>'
     + '<button class="yt-auth-btn google" onclick="ytAuth()" id="ytAuthBtn"'
     + (hasAuth ? ' style="display:none"' : '') + '>'
     + '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57C23.36 18.35 22.56 15.5 22.56 12.25z" fill="#fff"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#fff"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#fff"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#fff"/></svg>'
@@ -2528,23 +1977,23 @@ function showYouTubeUploadModal() {
 
     // Video status
     + '<div class="auth-badge ' + (hasVideo ? 'ok' : 'ng') + '">'
-    + (hasVideo ? '✅ エクスポート済み動画あり（' + (exportedBlob ? _fmtBytes(exportedBlob.size) : '') + '）'
-      : '⚠️ 未エクスポート — 先に「EXPORT VIDEO」を実行してください') + '</div>'
+    + (hasVideo ? '✁Eエクスポ�Eト済み動画あり�E�E + (exportedBlob ? _fmtBytes(exportedBlob.size) : '') + '�E�E
+      : '⚠�E�E未エクスポ�EチE E先に「EXPORT VIDEO」を実行してください') + '</div>'
 
     // Metadata
     + '<div class="yt-field"><label>動画タイトル *</label>'
     + '<input type="text" id="ytTitle" placeholder="歌詞動画タイトル" maxlength="100" value="' + (lyrics[0] ? lyrics[0].substring(0,60) + ' 歌詞動画' : '歌詞動画') + '"></div>'
 
-    + '<div class="yt-field"><label>説明</label>'
-    + '<textarea id="ytDesc" placeholder="動画の説明..." maxlength="5000">Lyrics video created with LYRIC MOTION</textarea></div>'
+    + '<div class="yt-field"><label>説昁E/label>'
+    + '<textarea id="ytDesc" placeholder="動画の説昁E.." maxlength="5000">Lyrics video created with LYRIC MOTION</textarea></div>'
 
-    + '<div class="yt-field"><label>タグ（カンマ区切り）</label>'
+    + '<div class="yt-field"><label>タグ�E�カンマ区刁E���E�E/label>'
     + '<input type="text" id="ytTags" placeholder="歌詞動画, lyric video, music" value="歌詞動画, lyric video"></div>'
 
     + '<div style="display:flex;gap:10px">'
-    + '<div class="yt-field" style="flex:1"><label>公開設定</label>'
-    + '<select id="ytPrivacy"><option value="private">🔒 非公開</option><option value="unlisted">🔗 限定公開</option><option value="public">🌐 公開</option></select></div>'
-    + '<div class="yt-field" style="flex:1"><label>カテゴリ</label>'
+    + '<div class="yt-field" style="flex:1"><label>公開設宁E/label>'
+    + '<select id="ytPrivacy"><option value="private">🔒 非�E閁E/option><option value="unlisted">🔗 限定�E閁E/option><option value="public">🌐 公閁E/option></select></div>'
+    + '<div class="yt-field" style="flex:1"><label>カチE��リ</label>'
     + '<select id="ytCategory"><option value="10">🎵 音楽</option><option value="22">🎭 ブログ</option><option value="24">🎪 エンタメ</option><option value="1">🎬 映画</option></select></div>'
     + '</div>'
 
@@ -2553,20 +2002,20 @@ function showYouTubeUploadModal() {
     + '<div style="font-size:10px;color:var(--text2);letter-spacing:1.5px;font-family:\'Space Mono\',monospace;text-transform:uppercase;margin-bottom:8px">THUMBNAIL</div>'
     + (thumbnailDataUrl
       ? '<img class="thumb-preview-img" src="' + thumbnailDataUrl + '" id="ytThumbPreview">'
-      : '<div style="background:var(--panel2);border:1px dashed var(--border);border-radius:8px;padding:20px;text-align:center;color:var(--text2);font-size:12px;margin-bottom:10px" id="ytThumbEmpty">サムネイル未生成</div>')
-    + '<button class="pbtn" style="margin-bottom:12px" onclick="_ytGenThumb()">🖼 サムネイルを' + (thumbnailDataUrl ? '再' : '') + '生成</button>'
+      : '<div style="background:var(--panel2);border:1px dashed var(--border);border-radius:8px;padding:20px;text-align:center;color:var(--text2);font-size:12px;margin-bottom:10px" id="ytThumbEmpty">サムネイル未生�E</div>')
+    + '<button class="pbtn" style="margin-bottom:12px" onclick="_ytGenThumb()">🖼 サムネイルめE + (thumbnailDataUrl ? '冁E : '') + '生�E</button>'
 
     // Upload button
     + '<hr class="yt-divider">'
     + '<button class="yt-upload-btn" id="ytUploadBtn" onclick="doYTUpload()"'
-    + (!hasAuth || !hasVideo ? ' disabled' : '') + '>▶ YouTubeにアップロード</button>'
+    + (!hasAuth || !hasVideo ? ' disabled' : '') + '>▶ YouTubeにアチE�EローチE/button>'
     + '<div id="ytProgWrap" style="display:none">'
     + '<div class="yt-prog-bar"><div class="yt-prog-fill" id="ytProgFill" style="width:0%"></div></div>'
-    + '<div class="yt-status" id="ytStatusMsg">アップロード中...</div></div>'
+    + '<div class="yt-status" id="ytStatusMsg">アチE�Eロード中...</div></div>'
     + '<div id="ytSuccessMsg" style="display:none" class="yt-success"></div>'
 
     + '<div style="display:flex;justify-content:flex-end;margin-top:14px">'
-    + '<button class="btn btn-ghost" onclick="this.closest(\'.yt-modal-wrap\').remove()">閉じる</button>'
+    + '<button class="btn btn-ghost" onclick="this.closest(\'.yt-modal-wrap\').remove()">閉じめE/button>'
     + '</div>'
     + '</div>';
   document.body.appendChild(modal);
@@ -2577,7 +2026,7 @@ function _fmtBytes(b) {
 }
 
 function _ytGenThumb() {
-  // YouTubeモーダルを閉じてサムネイルモーダルを開く（タイトル・アーティスト入力のため）
+  // YouTubeモーダルを閉じてサムネイルモーダルを開く（タイトル・アーチE��スト�E力�Eため�E�E
   document.querySelectorAll('.yt-modal-wrap').forEach(function(m){m.remove();});
   showThumbnailModal();
 }
@@ -2585,11 +2034,11 @@ function _ytGenThumb() {
 function ytAuth() {
   var cidEl = document.getElementById('ytClientId');
   var clientId = cidEl ? cidEl.value.trim() : (localStorage.getItem('yt_client_id') || '');
-  if (!clientId) { showToast('Google OAuth Client IDを入力してください'); return; }
+  if (!clientId) { showToast('Google OAuth Client IDを�E力してください'); return; }
   localStorage.setItem('yt_client_id', clientId);
 
   if (window.location.protocol === 'file:') {
-    alert('⚠️ ファイルをfile://で直接開いているためOAuth認証できません。\n\nVS Code Live Server等でローカルWebサーバーとして起動してください。\n例: http://localhost:5500/lyrics-video-creator_ver4.html\n\nGoogle Cloud ConsoleのリダイレクトURIに http://localhost:5500 を追加してください。');
+    alert('⚠�E�Eファイルをfile://で直接開いてぁE��ためOAuth認証できません、En\nVS Code Live Server等でローカルWebサーバ�Eとして起動してください、En侁E http://localhost:5500/lyrics-video-creator_ver4.html\n\nGoogle Cloud ConsoleのリダイレクチERIに http://localhost:5500 を追加してください、E);
     return;
   }
 
@@ -2605,7 +2054,7 @@ function ytAuth() {
   });
   var authUrl = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
   var popup = window.open(authUrl, 'ytAuth', 'width=600,height=700,left=200,top=80');
-  if (!popup) { showToast('⚠️ ポップアップをブロックされました。ブラウザの設定で許可してください。'); return; }
+  if (!popup) { showToast('⚠�E�EポップアチE�EをブロチE��されました。ブラウザの設定で許可してください、E); return; }
 
   var timer = setInterval(function() {
     try {
@@ -2619,19 +2068,19 @@ function ytAuth() {
         var authBtn = document.getElementById('ytAuthBtn');
         var reauthBtn = document.getElementById('ytReauthBtn');
         var uploadBtn = document.getElementById('ytUploadBtn');
-        if (badge) { badge.className = 'auth-badge ok'; badge.textContent = '✅ 認証済み'; }
+        if (badge) { badge.className = 'auth-badge ok'; badge.textContent = '✁E認証済み'; }
         if (authBtn) authBtn.style.display = 'none';
         if (reauthBtn) reauthBtn.style.display = 'block';
         if (uploadBtn && exportedBlob) uploadBtn.disabled = false;
-        showToast('✅ YouTube認証成功！');
+        showToast('✁EYouTube認証成功�E�E);
       }
-    } catch(e) { /* cross-origin — wait */ }
+    } catch(e) { /* cross-origin  Ewait */ }
   }, 500);
 }
 
 async function doYTUpload() {
   if (!ytAccessToken) { showToast('先にGoogleアカウントで認証してください'); return; }
-  if (!exportedBlob) { showToast('先に動画をエクスポートしてください'); return; }
+  if (!exportedBlob) { showToast('先に動画をエクスポ�Eトしてください'); return; }
 
   var title = (document.getElementById('ytTitle').value || '歌詞動画').trim();
   var desc  = (document.getElementById('ytDesc').value || '').trim();
@@ -2650,9 +2099,9 @@ async function doYTUpload() {
   };
 
   try {
-    _ytStatus('📤 アップロード初期化中...'); _ytProg(5);
+    _ytStatus('📤 アチE�Eロード�E期化中...'); _ytProg(5);
 
-    // content.googleapis.com はブラウザ直接アップロード用のCORS対応エンドポイント
+    // content.googleapis.com はブラウザ直接アチE�Eロード用のCORS対応エンド�EインチE
     var uploadUrl = await fetch(
       'https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status',
       {
@@ -2683,24 +2132,24 @@ async function doYTUpload() {
           if (xhr.status >= 200 && xhr.status < 300) {
             var loc = xhr.getResponseHeader('Location') || xhr.getResponseHeader('location');
             if (loc) resolve(loc);
-            else reject(new Error('Location ヘッダーなし (status=' + xhr.status + ')'));
+            else reject(new Error('Location ヘッダーなぁE(status=' + xhr.status + ')'));
           } else {
             reject(new Error('初期化エラー HTTP ' + xhr.status + ': ' + xhr.responseText.substring(0, 300)));
           }
         };
         xhr.onerror = function() {
-          reject(new Error('CORS/ネットワークエラー。シークレットモードで試すか、Google Cloud ConsoleでJavaScript生成元を追加してください: ' + window.location.origin));
+          reject(new Error('CORS/ネットワークエラー。シークレチE��モードで試すか、Google Cloud ConsoleでJavaScript生�E允E��追加してください: ' + window.location.origin));
         };
         xhr.send(JSON.stringify(metadata));
       });
     });
 
-    if (!uploadUrl) throw new Error('アップロードURLを取得できませんでした');
+    if (!uploadUrl) throw new Error('アチE�EロードURLを取得できませんでした');
 
-    _ytStatus('📡 動画データ送信中...'); _ytProg(10);
+    _ytStatus('📡 動画チE�Eタ送信中...'); _ytProg(10);
     var videoId = await _ytUploadWithProgress(uploadUrl, exportedBlob);
 
-    _ytProg(92); _ytStatus('🖼 サムネイルをアップロード中...');
+    _ytProg(92); _ytStatus('🖼 サムネイルをアチE�Eロード中...');
     if (thumbnailDataUrl && videoId) {
       try { await _ytUploadThumbnail(videoId); } catch(e) { console.warn('Thumbnail failed:', e); }
     }
@@ -2709,17 +2158,17 @@ async function doYTUpload() {
     var videoUrl = 'https://youtu.be/' + videoId;
     var succ = document.getElementById('ytSuccessMsg');
     succ.style.display = 'block';
-    succ.innerHTML = '✅ アップロード完了！<br><br>'
+    succ.innerHTML = '✁EアチE�Eロード完亁E��Ebr><br>'
       + '<a href="' + videoUrl + '" target="_blank" rel="noopener" style="color:var(--accent2);font-family:\'Space Mono\',monospace;font-size:12px;word-break:break-all">' + videoUrl + '</a><br><br>'
       + '<button class="btn btn-primary" onclick="window.open(\'' + videoUrl + '\',\'_blank\',\'noopener\')">YouTubeで開く</button>';
     document.getElementById('ytProgWrap').style.display = 'none';
-    showToast('✅ YouTubeにアップロードしました！');
+    showToast('✁EYouTubeにアチE�Eロードしました�E�E);
 
   } catch(err) {
     console.error('YT upload error:', err);
-    _ytStatus('❌ ' + err.message);
+    _ytStatus('❁E' + err.message);
     document.getElementById('ytUploadBtn').disabled = false;
-    showToast('❌ アップロード失敗');
+    showToast('❁EアチE�Eロード失敁E);
   }
 }
 
@@ -2732,13 +2181,13 @@ function _ytUploadWithProgress(uploadUrl, blob) {
       if (e.lengthComputable) {
         var pct = 10 + Math.round((e.loaded / e.total) * 80);
         _ytProg(pct);
-        _ytStatus('📡 アップロード中... ' + Math.round(e.loaded / e.total * 100) + '%  (' + _fmtBytes(e.loaded) + ' / ' + _fmtBytes(e.total) + ')');
+        _ytStatus('📡 アチE�Eロード中... ' + Math.round(e.loaded / e.total * 100) + '%  (' + _fmtBytes(e.loaded) + ' / ' + _fmtBytes(e.total) + ')');
       }
     };
     xhr.onload = function() {
       if (xhr.status >= 200 && xhr.status < 300) {
         try { resolve(JSON.parse(xhr.responseText).id); }
-        catch(e) { reject(new Error('レスポンス解析失敗')); }
+        catch(e) { reject(new Error('レスポンス解析失敁E)); }
       } else {
         reject(new Error('HTTP ' + xhr.status + ': ' + xhr.responseText.substring(0, 200)));
       }
@@ -2766,17 +2215,17 @@ function showYTUploadHint() {
   var hint = document.createElement('div');
   hint.className = 'yt-hint';
   hint.innerHTML = '<span style="color:#ff0000;font-size:20px">▶</span>'
-    + '<div><div style="font-weight:700;font-size:13px">YouTubeにアップロード</div>'
-    + '<div style="font-size:11px;color:var(--text2)">エクスポート済み動画を送信</div></div>'
-    + '<button class="btn btn-primary" style="font-size:12px;padding:6px 14px;white-space:nowrap" onclick="document.querySelectorAll(\'.yt-hint\').forEach(function(h){h.remove()});showYouTubeUploadModal()">アップロード</button>'
-    + '<span class="yt-hint-close" onclick="this.parentElement.remove()">✕</span>';
+    + '<div><div style="font-weight:700;font-size:13px">YouTubeにアチE�EローチE/div>'
+    + '<div style="font-size:11px;color:var(--text2)">エクスポ�Eト済み動画を送信</div></div>'
+    + '<button class="btn btn-primary" style="font-size:12px;padding:6px 14px;white-space:nowrap" onclick="document.querySelectorAll(\'.yt-hint\').forEach(function(h){h.remove()});showYouTubeUploadModal()">アチE�EローチE/button>'
+    + '<span class="yt-hint-close" onclick="this.parentElement.remove()">✁E/span>';
   document.body.appendChild(hint);
   setTimeout(function(){ document.querySelectorAll('.yt-hint').forEach(function(h){h.remove();}); }, 20000);
 }
 
 async function autoTimecodesGroq() {
   if (!audioFile) {
-    alert("音源をアップロードしてください");
+    alert("音源をアチE�Eロードしてください");
     return;
   }
 
@@ -2849,7 +2298,7 @@ resizeWcanvas();
 window.addEventListener('resize', resizeWcanvas);
 showLine(-1); applyText();
 
-document.getElementById('lyricsInput').value = '夜空に輝く星よ\nその光よ消えないで\n遠い記憶の中の\nあの日の笑顔が見える\n時の流れに乗せて\n届けたい想いがある\nいつまでも忘れない\nあなたのことを';
+document.getElementById('lyricsInput').value = '夜空に輝く星よ\nそ�E光よ消えなぁE��\n遠ぁE���Eの中の\nあ�E日の笑顔が見える\n時�E流れに乗せて\n届けたい想ぁE��ある\nぁE��までも忘れない\nあなた�EことめE;
 parseLyrics();
 autoTimecodes();
 </script>
